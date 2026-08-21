@@ -171,7 +171,7 @@ bool GalleryLayer::init()
 	};
 
 	//	Calls teh function to fetch the Gallery.
-	fetchGallery();
+	fetchURL();
 
 	setKeyboardEnabled(true);
 	setKeypadEnabled(true);
@@ -237,6 +237,32 @@ void GalleryLayer::setupIconPack()
 		});
 }
 
+void GalleryLayer::fetchURL()
+{
+	auto req = web::WebRequest();
+
+	m_fetchListener.spawn(
+		req.get("https://iconsgallery.pages.dev/assets/API_BASE.txt"),
+		[this](web::WebResponse res)
+		{
+			if (res.ok())
+			{
+				auto prevURL = Mod::get()->getSavedValue<std::string>("API");
+				auto newURL = utils::string::replace(res.string().unwrap(), "\n", "");
+
+				if ((std::string_view(prevURL) != std::string_view(newURL)) || prevURL.empty())
+					Mod::get()->setSavedValue<std::string>("API", newURL);
+
+				fetchGallery();
+			}
+			else
+			{
+				Notification::create("Error while fetching API", NotificationIcon::Error)->show();
+				log::error("There was an error fetching the URL from website");
+			}
+		});
+}
+
 void GalleryLayer::fetchGallery()
 {
 	if (m_scrollLayer && m_scrollLayer->m_contentLayer->getChildrenCount() > 0)
@@ -249,7 +275,7 @@ void GalleryLayer::fetchGallery()
 		m_loading->setVisible(true);
 
 	//	Main URL
-	std::string url = "https://expiration-hit-supplier-manufacturer.trycloudflare.com/api/index";
+	std::string url = fmt::format("{}/api/index", Mod::get()->getSavedValue<std::string>("API"));
 
 	//	Sorting
 	auto order = Mod::get()->getSettingValue<std::string>("sort-order");
@@ -298,7 +324,7 @@ void GalleryLayer::fetchGallery()
 				m_errorLabel->setScale(0.6f);
 
 				m_loading->setVisible(false);
-				log::error("Failed on fetching gallery data -- Error {}: {}", res.code(), res.errorMessage());
+				log::error("Error {}: Failed on fetching gallery data... {}", res.code(), res.errorMessage());
 			}
 		});
 };
@@ -489,8 +515,7 @@ void GalleryLayer::setIDPopupClosed(SetIDPopup *popup, int value)
 	if (m_pagesBtn)
 	{
 		m_pagesBtn->setSprite(
-			ButtonSprite::create(fmt::format("{}", m_page + 1).c_str(), 20, 20, 0.8f, true, "bigFont.fnt", "GJ_button_01.png")
-		);
+			ButtonSprite::create(fmt::format("{}", m_page + 1).c_str(), 20, 20, 0.8f, true, "bigFont.fnt", "GJ_button_01.png"));
 	}
 
 	fetchGallery();
@@ -547,7 +572,16 @@ void GalleryLayer::onSettings(CCObject *)
 
 void GalleryLayer::onFolder(CCObject *)
 {
-	utils::file::openFolder(Mod::get()->getConfigDir());
+	//	utils::file::openFolder(Mod::get()->getConfigDir());
+
+	if (!Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder").empty())
+	{
+		utils::file::openFolder(Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder"));
+	}
+	else if (Mod::get()->getSettingValue<bool>("more-icons-folder"))
+	{
+		utils::file::openFolder(Loader::get()->getInstalledMod("hiimjustin000.more_icons")->getConfigDir());
+	}
 }
 
 void GalleryLayer::onDiscord(CCObject *)

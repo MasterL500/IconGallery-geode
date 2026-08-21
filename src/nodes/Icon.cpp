@@ -50,7 +50,7 @@ void Icon::downloadIcon()
 	//	Web stuff
 	auto weak = geode::WeakRef(this);
 	auto req = utils::web::WebRequest();
-	auto url = fmt::format("https://expiration-hit-supplier-manufacturer.trycloudflare.com/api/sprites/{}", m_fileName);
+	auto url = fmt::format("{}/api/sprites/{}", Mod::get()->getSavedValue<std::string>("API"), m_fileName);
 
 	//	Progress
 	req.onProgress(
