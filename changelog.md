@@ -1,11 +1,12 @@
 # Changelog
 
-### <cy>v1.0.0-alpha.6</c> (Latest)
+### <co>v1.0.0-alpha.6</c> (Latest)
 
 * <cp>Thank you Saritahh for your contribution!</c>
 * <cg>Added</c> tag visuals for formats and gamemodes.
 * <cg>Added</c> back the text description on icons.
 * <cg>Added</c> custom visuals for search buttons.
+* <cg>Added</c> feature to fetch API online.
 * <cy>Fixed</c> error on searching.
 
 ### <co>v1.0.0-alpha.5</c>

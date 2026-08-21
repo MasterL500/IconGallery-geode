@@ -42,6 +42,10 @@ protected:
 	void loadGallery();
 	matjson::Value m_fetchedData;
 
+	//	Get the URL
+	TaskHolder<web::WebResponse> m_fetchListener;
+	void fetchURL();
+
 public:
 	gd::string m_authorFilter = "";
 	gd::string m_searchFilter = "";
