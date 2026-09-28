@@ -6,7 +6,7 @@ const char *MORE_ICONS = "hiimjustin000.more_icons";
 //	Returns the format based on the string
 IconFormat2 formatFromString(std::string format)
 {
-	return (std::string_view(format) == std::string_view("Vanilla")) ? IconFormat2::Vanilla2 : IconFormat2::MoreIcons2;
+	return (std::string_view(format) == std::string_view("Vanilla2")) ? IconFormat2::Vanilla2 : IconFormat2::MoreIcons2;
 };
 
 //	Let's create an Icon2 Object!
@@ -89,7 +89,7 @@ void Icon2::downloadIcon()
 					//	Next phase, unpack the icon
 					if (Mod::get()->getSettingValue<bool>("auto-unpack"))
 					{
-						unzipIcon2();
+						exp_unpackIcon(false);
 					}
 					else
 					{
@@ -160,10 +160,10 @@ void Icon2::unpackIcon()
 
 	//	This is prone to issues, I know.
 	std::filesystem::path path = Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder");
-	std::filesystem::path unzipDir = (m_format == IconFormat2::MoreIcons) || Mod::get()->getSettingValue<bool>("vanilla-more-icons") ? (path / "config" / "hiimjustin000.more_icons" / gamemode) : (path / "icons");
+	std::filesystem::path unzipDir = (m_format == IconFormat2::MoreIcons2) || Mod::get()->getSettingValue<bool>("vanilla-more-icons") ? (path / "config" / "hiimjustin000.more_icons" / gamemode) : (path / "icons");
 
 	//	Special locations (if their settings are enabled)
-	if (m_format == IconFormat2::Vanilla && Mod::get()->getSettingValue<bool>("resources-folder"))
+	if (m_format == IconFormat2::Vanilla2 && Mod::get()->getSettingValue<bool>("resources-folder"))
 	{
 		log::debug("Resources Folder Enabled");
 		unzipDir = geode::dirs::getResourcesDir() / "icons";
@@ -216,188 +216,7 @@ void Icon2::unpackIcon()
 	}
 };
 
-/*
-*	POR HACER:
-*	1. Rehacer la extraccion de un icono del archivo ZIP
-*	2. Hacer el pop-up de establecer el nombre del icono
-*	3. Tener todas las variables definidas antes de la wea.
-*	4. Re-organizar el codigo ya asqueroso.
-
-*	COMO SERIA EL ORDEN:
-*	1. Al descargar icono, aparece popup de cambiar nombre
-*	2. El usuario elige guardar el nombre de icono.
-		- Si el nombre no es usado, se agrega el icono normalmente
-*	3. Si el nombre ya es usado, aparezca la alerta de sobreescribir
-		- Aceptado, se sobreescribe el icono.
-		- Rechazado, el usuario vuelve al popup de renombrado
-*	4. Si todo sale bien, el icono es agregado CON el nombre elegido.
-*	5. Rezar para que la gente no sea estupida (error)
-*/
-
-//	Unpacking shenanigans
-void Icon2::unpackIcon2()
-{
-	std::vector<std::string> modeFolders = {
-		"icon",
-		"ship",
-		"ball",
-		"ufo",
-		"wave",
-		"robot",
-		"spider",
-		"swing",
-		"jetpack"};
-	auto gamemode = modeFolders[(int)m_gamemode];
-
-	//	This is prone to issues, I know.
-	std::filesystem::path path = Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder");
-	std::filesystem::path unzipDir = (m_format == IconFormat2::MoreIcons) || Mod::get()->getSettingValue<bool>("vanilla-more-icons") ? (path / "config" / "hiimjustin000.more_icons" / gamemode) : (path / "icons");
-
-	//	Special locations (if their settings are enabled)
-	if (m_format == IconFormat2::Vanilla && Mod::get()->getSettingValue<bool>("resources-folder"))
-	{
-		log::debug("Resources Folder Enabled");
-		unzipDir = geode::dirs::getResourcesDir() / "icons";
-	}
-	else if (Mod::get()->getSettingValue<bool>("more-icons-folder"))
-	{
-		log::debug("More Icons Folder Enabled");
-		unzipDir = Loader::get()->getInstalledMod("hiimjustin000.more_icons")->getConfigDir() / gamemode;
-	}
-
-	//	Just made sum BULLSHIT!!!!
-	auto unzipRes = utils::file::Unzip::create(m_zipPath);
-	if (unzipRes.isErr())
-	{
-		return log::error("Unzip::create failed: {}", unzipRes.unwrapErr());
-	}
-
-	auto unzip = std::move(unzipRes).unwrap();
-	auto entries = unzip.getEntries();
-	auto iconFilename = utils::string::split(utils::string::pathToString(entries[0]), "-");
-
-	auto test = unzip.extractAllTo(Mod::get()->getConfigDir() / "temp");
-
-	if (test.isOk())
-	{
-		log::debug("Copy of the sprites done");
-	}
-
-	//	Verifies if the sprites already exist (assuming they are all named the same)
-	if (std::filesystem::exists(unzipDir / entries[0]))
-	{
-		auto popup = createQuickPopup(
-			"What to do?",
-			"Uh there's a conflict",
-			"Replace",
-			"Rename",
-			[this, entries, unzipDir](bool replace, bool rename)
-			{
-				if (rename)
-				{
-					std::filesystem::rename(Mod::get()->getConfigDir() / "temp" / entries[0], unzipDir / "test-uhd.png");
-				}
-			});
-	}
-	else
-	{
-		if (utils::file::Unzip::intoDir(m_zipPath, unzipDir, false).isOk())
-		{
-			Notification::create("Icon2 Succesfully Added!", NotificationIcon::Success)->show();
-			log::debug("Icon2 Exported to path: {}", unzipDir);
-		}
-	}
-};
-
-void Icon2::unzipIcon()
-{
-
-	//	Selecting the Gamemode Folder
-	std::vector<std::string> modeFolders = {
-		"icon",
-		"ship",
-		"ball",
-		"ufo",
-		"wave",
-		"robot",
-		"spider",
-		"swing",
-		"jetpack"};
-	auto gamemode = modeFolders[(int)m_gamemode];
-
-	//	Path of the Texture Pack and default unzipping location (Icons folder).
-	std::filesystem::path packPath = Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder");
-	std::filesystem::path unzipDir = packPath / "icons";
-
-	//	If it's MoreIcons or Vanilla is treated as M.I. change unzipping directory to the More Icons gamemode folder within the Texture Pack.
-	if ((m_format == IconFormat2::MoreIcons) || Mod::get()->getSettingValue<bool>("vanilla-more-icons"))
-	{
-		unzipDir = packPath / "config" / "hiimjustin000.more_icons" / gamemode;
-		log::debug("* UNPACK_PATH: Changed to the More Icons folder within Texture Pack.");
-	};
-
-	//	Special locations (if their settings are enabled)
-	if (m_format == IconFormat2::Vanilla && Mod::get()->getSettingValue<bool>("resources-folder"))
-	{
-		unzipDir = geode::dirs::getResourcesDir() / "icons";
-		log::debug("* UNPACK_PATH: Changed to the resources Folder.");
-	}
-	else if (Mod::get()->getSettingValue<bool>("more-icons-folder"))
-	{
-		unzipDir = Loader::get()->getInstalledMod("hiimjustin000.more_icons")->getConfigDir() / gamemode;
-		log::debug("* UNPACK_PATH: changed to More Icons (Mod) folders.");
-	};
-
-	//	Unzipping Process.
-	auto unzipRes = utils::file::Unzip::create(m_zipPath);
-	if (unzipRes.isErr())
-		return log::error("Unzipping failed: {}", unzipRes.unwrapErr());
-
-	//	Gets the data.
-	auto unzipped = std::move(unzipRes).unwrap();
-	auto entries = unzipped.getEntries();
-
-	if (!std::filesystem::exists(unzipDir / entries[0]))
-	{
-		if (utils::file::Unzip::intoDir(m_zipPath, unzipDir, Mod::get()->getSettingValue<bool>("delete-zips")).isOk())
-		{
-			Notification::create("Icon2 Succesfully Added!", NotificationIcon::Success)->show();
-			log::debug("Icon2 Exported to path: {}", unzipDir);
-		}
-
-		return;
-	}
-
-	auto temp = unzipped.extractAllTo(Mod::get()->getConfigDir() / "temp");
-
-	if (temp.isErr())
-		return log::error("Couldn't unzip sprites: {}", temp.unwrapErr());
-
-	/*
-	auto iconFilename = utils::string::split(utils::string::pathToString(entries[0]), "-");
-	//	Creates temporal place for unzipped entries.
-	auto temp = unzipped.extractAllTo(Mod::get()->getConfigDir() / "temp");
-	if (temp.isErr())
-		return log::error("Couldn't unzip sprites: {}", temp.unwrapErr());
-
-	if (!std::filesystem::exists(unzipDir / entries[0]))
-	{
-		for (int ii = 0; ii < entries.size(); ii++)
-		{
-			std::filesystem::rename(Mod::get()->getConfigDir() / "temp" / entries[ii], unzipDir / entries[ii]);
-		}
-
-		Notification::create("Icon2 Succesfully Added!", NotificationIcon::Success)->show();
-		log::debug("Icon2 Exported to path: {}", unzipDir);
-	}
-	else
-	{
-
-	}
-	*/
-}
-
-void Icon2::unzipIcon2()
+void Icon2::exp_unpackIcon(bool forceMoreIcons)
 {
 	//	Selecting the Gamemode Folder
 	std::vector<std::string> modeFolders = {
@@ -417,15 +236,15 @@ void Icon2::unzipIcon2()
 	std::filesystem::path unzipPath = packPath / "config" / MORE_ICONS / gamemode;
 
 	//	Other path locations.
-	if (m_format == IconFormat2::Vanilla && !Mod::get()->getSettingValue<bool>("vanilla-more-icons"))
+	if (m_format == IconFormat2::Vanilla2 && !Mod::get()->getSettingValue<bool>("vanilla-more-icons"))
 	{
-		//	If the icon is Vanilla and the setting of "Vanilla as MI" isn't enabled.
+		//	If the icon is Vanilla2 and the setting of "Vanilla2 as MI" isn't enabled.
 		unzipPath = packPath / "icons";
 		log::debug("* UNPACK_PATH: Assigned the Icons folder within Texture Pack.");
 	}
-	else if (m_format == IconFormat2::Vanilla && Mod::get()->getSettingValue<bool>("resources-folder"))
+	else if (m_format == IconFormat2::Vanilla2 && Mod::get()->getSettingValue<bool>("resources-folder"))
 	{
-		//	If the icon is Vanilla and the setting of "Resources folder" is enabled.
+		//	If the icon is Vanilla2 and the setting of "Resources folder" is enabled.
 		unzipPath = geode::dirs::getResourcesDir() / "icons";
 		log::debug("* UNPACK_PATH: Assigned the Resources Folder.");
 	}
@@ -510,15 +329,15 @@ void Icon2::setTextPopupClosed(SetTextPopup *popup, gd::string text)
 	std::filesystem::path unzipPath = packPath / "config" / MORE_ICONS / gamemode;
 
 	//	Other path locations.
-	if (m_format == IconFormat2::Vanilla && !Mod::get()->getSettingValue<bool>("vanilla-more-icons"))
+	if (m_format == IconFormat2::Vanilla2 && !Mod::get()->getSettingValue<bool>("vanilla-more-icons"))
 	{
-		//	If the icon is Vanilla and the setting of "Vanilla as MI" isn't enabled.
+		//	If the icon is Vanilla2 and the setting of "Vanilla2 as MI" isn't enabled.
 		unzipPath = packPath / "icons";
 		log::debug("* UNPACK_PATH: Assigned the Icons folder within Texture Pack.");
 	}
-	else if (m_format == IconFormat2::Vanilla && Mod::get()->getSettingValue<bool>("resources-folder"))
+	else if (m_format == IconFormat2::Vanilla2 && Mod::get()->getSettingValue<bool>("resources-folder"))
 	{
-		//	If the icon is Vanilla and the setting of "Resources folder" is enabled.
+		//	If the icon is Vanilla2 and the setting of "Resources folder" is enabled.
 		unzipPath = geode::dirs::getResourcesDir() / "icons";
 		log::debug("* UNPACK_PATH: Assigned the Resources Folder.");
 	}

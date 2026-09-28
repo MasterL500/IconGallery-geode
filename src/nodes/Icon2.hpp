@@ -1,4 +1,4 @@
-#pramga once
+#pragma once
 #include <Geode/Geode.hpp>
 #include <Geode/loader/Dirs.hpp>
 
@@ -31,7 +31,7 @@ class Icon2 : public CCObject, public SetTextPopupDelegate
 	std::vector<std::string> m_collaborators = {};
 
 	//	Creating and adding data
-	static Icon *create(std::string name, std::string author, std::string filename, std::string previewURL, int gamemode, int downloads = 0, std::string desc = "", std::string format = "More Icons");
+	static Icon2 *create(std::string name, std::string author, std::string filename, std::string previewURL, int gamemode, int downloads = 0, std::string desc = "", std::string format = "More Icons");
 	void addCollab(std::vector<std::string> contributors);
 
 	//	Downloading Processes
@@ -50,4 +50,4 @@ class Icon2 : public CCObject, public SetTextPopupDelegate
 	void exp_getUnzipLocation();
 	void exp_unpackIcon(bool forceMoreIcons);
 	void setTextPopupClosed(SetTextPopup *popup, gd::string text) override;
-}
+};
