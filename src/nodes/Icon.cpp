@@ -1,6 +1,8 @@
 #include "Icon.hpp"
 #include "../ui/IconCell.hpp"
 
+const char *MOREICONS = "hiimjustin000.more_icons";
+
 //	Returns the format based on the string
 IconFormat formatFromString(std::string format)
 {
@@ -87,7 +89,14 @@ void Icon::downloadIcon()
 					//	Next phase, unpack the icon
 					if (Mod::get()->getSettingValue<bool>("auto-unpack"))
 					{
-						unpackIcon();
+						if (Mod::get()->getSettingValue<bool>("experimental-export"))
+						{
+							exp_unpackIcon();
+						}
+						else
+						{
+							unpackIcon();
+						}
 					}
 					else
 					{
@@ -100,7 +109,14 @@ void Icon::downloadIcon()
 							{
 								if (btn)
 								{
-									unpackIcon();
+									if (Mod::get()->getSettingValue<bool>("experimental-export"))
+									{
+										exp_unpackIcon();
+									}
+									else
+									{
+										unpackIcon();
+									}
 								}
 							});
 					}
@@ -212,4 +228,180 @@ void Icon::unpackIcon()
 			log::debug("Icon Exported to path: {}", unzipDir);
 		}
 	}
+};
+
+//	Experimental feature to unpacking the Icon
+void Icon::exp_unpackIcon()
+{
+	//	Creates the temporal folder for the Icon.
+	auto tempPath = Mod::get()->getConfigDir() / "temp" / geode::utils::string::replace(m_fileName, ".gdicon", "");
+
+	//	Unzips the content into the newly created folder.
+	auto tempRes = utils::file::Unzip::intoDir(m_zipPath, tempPath, Mod::get()->getSettingValue<bool>("delete-zips"));
+	if (tempRes.isErr())
+	{
+		Notification::create("Error while Unzipping...", NotificationIcon::Error)->show();
+		log::error("* ERROR WHILE UNZIPPING AT TEMP FOLDER: {}", tempRes.unwrapErr());
+		return;
+	}
+
+	//	Reads the directory
+	auto tempDirRes = utils::file::readDirectory(tempPath, false);
+	if (tempDirRes.isErr())
+	{
+		Notification::create("Error while Unzipping...", NotificationIcon::Error)->show();
+		log::error("* FAILED READING DIRECTORY PATH.");
+		return;
+	};
+
+	//	Gets the vector of the filenames
+	m_tempFiles = std::move(tempDirRes).unwrap();
+	auto unzipPath = exp_getUnzipLocation();
+
+	if (!std::filesystem::exists(unzipPath / m_tempFiles[0].filename()))
+	{
+		for (int ii = 0; ii < m_tempFiles.size(); ii++)
+		{
+			std::filesystem::rename(m_tempFiles[ii], unzipPath / m_tempFiles[ii].filename());
+			log::debug("* FILE \"{}\" MOVED TO LOCATION.", m_tempFiles[ii].filename());
+		}
+
+		Notification::create("Icon Succesfully Added!", NotificationIcon::Success)->show();
+		log::debug("* Icon succesfully exported.");
+
+		std::error_code ec;
+		std::filesystem::remove_all(tempPath, ec);
+
+		return;
+	}
+
+	log::debug("* CONFLICT FOUND.");
+
+	//	Opens the popup to prompt the renaming.
+	auto iconFilename = utils::string::split(utils::string::pathToString(m_tempFiles[0].stem()), "-");
+	auto popup = createQuickPopup(
+		"Name Conflict",
+		"There's already an icon taking the spot of \"<cg>" + iconFilename[0] + "</c>\", please input a new name for this one.",
+		"Ok", nullptr, [this, iconFilename](bool ok, auto)
+		{
+			if(ok){
+				auto setTextPopup = SetTextPopup::create(iconFilename[0], "Input Name", 100, "Icon Filename", "Apply", true, 0);
+				setTextPopup->m_delegate = this;
+				setTextPopup->show();
+			} });
+
+	log::debug("* END OF UNZIP FUNCTION.");
+}
+
+//	When the popup is closed
+void Icon::setTextPopupClosed(SetTextPopup *popup, gd::string text)
+{
+	if (!popup)
+		return;
+
+	if (popup->m_cancelled)
+	{
+		//	Notifies the user the process has been cancelled
+		Notification::create("Process cancelled", NotificationIcon::Error)->show();
+		log::debug("* The user has cancelled the process");
+
+		//	Removes the temporal files (Because why bother?).
+		auto tempPath = Mod::get()->getConfigDir() / "temp" / geode::utils::string::replace(m_fileName, ".gdicon", "");
+		std::error_code ec;
+		std::filesystem::remove_all(tempPath, ec);
+
+		return;
+	}
+
+	//	If the temporary files weren't saved, skips this process.
+	if (!m_tempFiles.empty())
+	{
+		auto unzipPath = exp_getUnzipLocation(true);
+
+		//	Renames every file of this icon and moves it to the destined path.
+		for (int ii = 0; ii < m_tempFiles.size(); ii++)
+		{
+			//	log::debug("ENTRY: {}", m_tempFiles[ii].filename());
+
+			//	Fetches the segment of the filename that states the quality (-hd or -uhd).
+			auto extension = utils::string::split(utils::string::pathToString(m_tempFiles[ii].filename()), "-")[1];
+			auto newFilename = fmt::format("{}-{}", text, extension);
+
+			//	Then moves the file into the destined folder.
+			std::filesystem::rename(m_tempFiles[ii], unzipPath / newFilename);
+			log::debug("* FILE \"{}\" MOVED TO LOCATION.", newFilename);
+		}
+
+		//	If the icon was Vanilla, give the heads up.
+		if (m_format == IconFormat::Vanilla)
+		{
+			auto popup = createQuickPopup(
+				"Heads up",
+				"The icon will be added, but treated in the <cp>More Icons</c> format due to it's rename (no longer works as Vanilla icon). Hope you understand.",
+				"Ok",
+				nullptr,
+				[](bool ok, auto)
+				{
+					if (ok)
+					{
+						Notification::create("Icon Succesfully Added!", NotificationIcon::Success)->show();
+						log::debug("* Icon succesfully renamed and exported.");
+					}
+				});
+		}
+		else
+		{
+			Notification::create("Icon Succesfully Added!", NotificationIcon::Success)->show();
+			log::debug("* Icon succesfully renamed and exported.");
+		}
+
+		//	Cleans up the temporal files after the process is done.
+		auto tempPath = Mod::get()->getConfigDir() / "temp" / geode::utils::string::replace(m_fileName, ".gdicon", "");
+		std::error_code ec;
+		std::filesystem::remove_all(tempPath, ec);
+	}
+}
+
+//	Function to get the Unzip location
+std::filesystem::path Icon::exp_getUnzipLocation(bool forceMoreIcons)
+{
+	//	Selecting the Gamemode Folder
+	std::vector<std::string> modeFolders = {
+		"icon",
+		"ship",
+		"ball",
+		"ufo",
+		"wave",
+		"robot",
+		"spider",
+		"swing",
+		"jetpack"};
+	auto gamemode = modeFolders[(int)m_gamemode];
+
+	//	Path of the texture pack and default unzipping location (More Icons folder).
+	std::filesystem::path packPath = Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder");
+	std::filesystem::path unzipPath = packPath / "config" / MOREICONS / gamemode;
+
+	//	Other path locations.
+	if (m_format == IconFormat::Vanilla && !Mod::get()->getSettingValue<bool>("vanilla-more-icons") && !forceMoreIcons)
+	{
+		//	If the icon is Vanilla2 and the setting of "Vanilla2 as MI" isn't enabled.
+		unzipPath = packPath / "icons";
+		log::debug("* UNPACK_PATH: Assigned the Icons folder within Texture Pack.");
+	}
+	else if (m_format == IconFormat::Vanilla && Mod::get()->getSettingValue<bool>("resources-folder") && !forceMoreIcons)
+	{
+		//	If the icon is Vanilla2 and the setting of "Resources folder" is enabled.
+		unzipPath = geode::dirs::getResourcesDir() / "icons";
+		log::debug("* UNPACK_PATH: Assigned the Resources Folder.");
+	}
+	else if (Mod::get()->getSettingValue<bool>("more-icons-folder"))
+	{
+		//	If the More Icons folder is enabled.
+		unzipPath = Loader::get()->getInstalledMod(MOREICONS)->getConfigDir() / gamemode;
+		log::debug("* UNPACK_PATH: Assigned the More Icons (Mod) folders.");
+	}
+
+	//	Returns the selected location.
+	return unzipPath;
 };
