@@ -87,8 +87,8 @@
 		},
 		"experimental-export":{
 			"type": "bool",
-			"name": "New Unpacking Format",
-			"description":"<cy>**ENGLISH**</c>: If you want to test the new icon unpacking function, allows you to rename the icon filename if a name conflict is found.\n\nThis is an experimental feature, to test it out before replacing the main code.\n***\n<cy>**SPANISH**</c>: Si quieres probar la nueva function de extraer iconos, que te pide que cambies el nombre de archivo de un icono si se detecta un conflicto.\n\nEsta es una funcion experimental, para ponerla a prueba antes de reemplazar el codigo principal.",
+			"name": "New Unpacking Code",
+			"description":"<cy>**ENGLISH**</c>: If you want to test the new icon unpacking function, allows you to rename the icon filename if a name conflict is found.\n\nThis is an experimental feature, to test it out before replacing the main code.\n***\n<cy>**SPANISH**</c>: Si quieres probar la nueva funcion de extraer iconos, que te pide que cambies el nombre de archivo de un icono si se detecta un conflicto.\n\nEsta es una funcion experimental, para ponerla a prueba antes de reemplazar el codigo principal.",
 			"default": false
 		}
 	},
