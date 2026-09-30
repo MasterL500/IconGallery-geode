@@ -260,6 +260,11 @@ void Icon::exp_unpackIcon()
 
 	if (!std::filesystem::exists(unzipPath / m_tempFiles[0].filename()))
 	{
+		if (!std::filesystem::exists(unzipPath))
+		{
+			std::filesystem::create_directory(unzipPath);
+		}
+
 		for (int ii = 0; ii < m_tempFiles.size(); ii++)
 		{
 			std::filesystem::rename(m_tempFiles[ii], unzipPath / m_tempFiles[ii].filename());

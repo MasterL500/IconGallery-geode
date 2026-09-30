@@ -2,6 +2,8 @@
 
 ### <cy>v1.0.0-beta.4</c> (Latest)
 
+* <co>Reworked</c> UI of the gallery (to solve 4:3 issues).
+* <co>Reworked</c> button designs on the mod.
 * <cg>Added</c> new renaming system (experimental).
 * <cg>Added</c> experimental settings segment.
 * <cy>Fixed</c> some typos and text errors.

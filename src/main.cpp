@@ -18,7 +18,7 @@ class $modify(GarageLayer, GJGarageLayer)
 
 		auto spr = CrossButtonSprite::createWithSprite("GalleryIcon.png"_spr, 0.9f);
 		spr->setScale(0.75f);
-	
+
 		auto button = CCMenuItemSpriteExtra::create(
 			spr,
 			this,

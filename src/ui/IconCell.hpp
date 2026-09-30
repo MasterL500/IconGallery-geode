@@ -7,7 +7,7 @@ class IconCell : public CCLayer
 protected:
 	Icon *m_icon;
 	CCLayerColor *m_background;
-	CCSize m_size = {357.0f, 73.0f};
+	CCSize m_size = {340.0f, 73.0f};
 	double m_margin = 3.f;
 	int m_previewAttempts;
 
