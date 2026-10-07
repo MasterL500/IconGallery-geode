@@ -176,7 +176,7 @@ bool GalleryLayer::init()
 		menu_selector(GalleryLayer::onFind));
 	m_pagesBtn->setTag(0);
 	m_pagesBtn->setID("pages-button");
-	buttonMenu->addChildAtPosition(m_pagesBtn, Anchor::TopRight, ccp(-25, -50), false);
+	buttonMenu->addChildAtPosition(m_pagesBtn, Anchor::TopRight, ccp(-25, -40), false);
 
 	//	Search -- Searches Icons by Name
 	m_findBtn = CCMenuItemSpriteExtra::create(

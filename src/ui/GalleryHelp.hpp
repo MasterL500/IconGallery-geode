@@ -52,7 +52,7 @@ El mod te crea automaticamente un <cc>Texture Pack</c> al inicio, ahi es donde t
 El mod **NO** aplica automaticamente el Texture Pack, tienes que hacerlo tu mismo dentro del manager de <cg>Texture Loader</c>.
 ***
 ### Otros Lugares:
-En la configuracion, tu puedes activar otros lugares donde los iconos descargados terminaran si no quieres un texture pack, como la carpeta de More Icons (en general) o la carpeta de los iconos del juego (para los de formato vanilla).
+En la configuracion, tu puedes activar otros lugares donde los iconos descargados terminaran si no quieres un texture pack.
 
 Lugares como las carpetas dentro del <cl>Mod de More Icons</c> (en general) o los recursos originales del juego (para iconos <cf>Vanilla</c>).
 
@@ -122,7 +122,7 @@ constexpr const char *supportENG = R"(# Support
 If you come across bugs with the mod itself or help in the development of the Icon Gallery, make sure to contact us through the [GitHub repository](https://github.com/MasterL500/IconGallery-geode) or through [Asterveila's Discord Server](https://discord.gg/dceY3uvGzD)
 ***
 ### Other Methods:
-If you like the <co> Icon Gallery</c> and want to show some monetary support, you can do it by [Buying Aster a ko-fi].
+If you like the <co> Icon Gallery</c> and want to show some monetary support, you can do it by [Buying Aster a ko-fi](https://ko-fi.com/asterveila).
 
 That's all for now, thank you for enjoying the Mod!
 ***
@@ -130,6 +130,7 @@ That's all for now, thank you for enjoying the Mod!
 <cp>Asterveila</c>:
 - [Twitter](https://x.com/Asterveila)
 - [Youtube](https://www.youtube.com/@Asterveila)
+
 <cj>ML500's</c>:
 - [Twitter](https://x.com/MasterL500)
 - [Youtube](https://www.youtube.com/@MasterL500))";
@@ -137,7 +138,8 @@ That's all for now, thank you for enjoying the Mod!
 constexpr const char *supportSPA = R"(# Soporte
 Si encuentras un bug del mod mismo o deseas ayudar el desarrollo de la galeria (ya sea el Mod o la pagina web), asegurate de contactarnos a traves del [Repositorio Github](https://github.com/MasterL500/IconGallery-geode) o por medio del [Servidor de Discord](https://discord.gg/dceY3uvGzD).
 ***
-Si te gusta la <co>Icon Gallery</c> y quieres darle un soporte monetaria, puedes hacerlo al [Donar Aster en Ko-fi](https://ko-fi.com/asterveila)
+### Otros Metodos:
+Si te gusta la <co>Icon Gallery</c> y quieres darle un soporte monetaria, puedes hacerlo al [Donar Aster en Ko-fi](https://ko-fi.com/asterveila).
 
 Eso es todo, muchas gracias por disfrutar del Mod!
 ***
@@ -145,6 +147,7 @@ Eso es todo, muchas gracias por disfrutar del Mod!
 <cp>Asterveila</c>:
 - [Twitter](https://x.com/Asterveila)
 - [Youtube](https://www.youtube.com/@Asterveila)
+
 <cj>ML500's</c>:
 - [Twitter](https://x.com/MasterL500)
 - [Youtube](https://www.youtube.com/@MasterL500))";
