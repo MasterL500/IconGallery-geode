@@ -290,7 +290,7 @@ void Icon::exp_unpackIcon()
 		"Ok", nullptr, [this, iconFilename](bool ok, auto)
 		{
 			if(ok){
-				auto setTextPopup = SetTextPopup::create(iconFilename[0], "Input Name", 100, "Icon Filename", "Apply", true, 0);
+				auto setTextPopup = SetTextPopup::create(iconFilename[0], "Input Name", 100, "Icon Filename", "Apply", false, 0);
 				setTextPopup->m_delegate = this;
 				setTextPopup->show();
 			} });

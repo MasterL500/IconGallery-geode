@@ -206,7 +206,7 @@ bool IconCell::init(Icon *icon, bool even)
 	m_icon->m_downloadBar->setContentSize(m_size);
 	this->addChild(m_icon->m_downloadBar);
 
-	m_icon->m_downloadBar->m_groove->setScale(0.75f);
+	m_icon->m_downloadBar->m_groove->setScale(0.5f);
 	m_icon->m_downloadBar->m_groove->setAnchorPoint({1, 0.5});
 	m_icon->m_downloadBar->m_touchLogic->setVisible(false);
 	m_icon->m_downloadBar->m_groove->setPosition({m_size.width - 5.f, 7.5});

@@ -36,6 +36,11 @@ La <co>**Icon Gallery**</c> empezo como una pagina web que actua como un museo d
 
 constexpr const char *tutorialENG = R"(# How to Use
 The mod will automatically set up a <cc>Texture Pack</c> upon start-up, where all the icons downloaded from the gallery will be saved by default.
+***
+### Icon Pack Folder:
+In the settings (Gear button at the bottom right corner) there's a setting called <cy>**Icon Pack Folder**</c>.
+
+If this wasn't set automatically, please set yourself to point a valid <cg>Texture Loader Pack</c>, so then you could start downloading icons.
 
 The mod does **NOT** automatically apply the texture pack, so you have to do that yourself inside the <cg>Texture Loader</c> manager.
 ***
@@ -48,6 +53,11 @@ Locations such as the folders within the <cl>More Icons</c> Mod (in general) or 
 
 constexpr const char *tutorialSPA = R"(# Como Usar
 El mod te crea automaticamente un <cc>Texture Pack</c> al inicio, ahi es donde todos los iconos descargados de la galeria seran guardados por default.
+***
+### Icon Pack Folder:
+En la configuracion (Boton de engranaje a la esquina inferior derecha de la galeria) se encuentra la opcion de <cy>**Icon Pack Folder**</c>.
+
+Si no se ha configurado automaticamente, asignale un <cg>Texture Pack del Loader</c> para que puedas comenzar a descargar iconos.
 
 El mod **NO** aplica automaticamente el Texture Pack, tienes que hacerlo tu mismo dentro del manager de <cg>Texture Loader</c>.
 ***
@@ -91,32 +101,36 @@ Si deseas publicar tu propio icono aqui, visita la <cg>Pagina web de la Icon Gal
 constexpr const char *faqENG = R"(# FAQ
 This is a list of frequently asked questions, just in case you need to look for more help about the mod, join the discord server.
 ***
-### How do I equip the icons?
-If you downloaded icons via the mod, you should already have a Icon pack folder assigned it, go to the <cg>Texture Loader</c> and move the pack named \"<co>**Downloaded Icons**</c>\" into the right column and refresh the textures.
-***
-### I can't find an Icon I downloaded
-Reload your textures if you don't see any changes. Some icons might have the \"<cf>Vanilla</c>\" format, thus they take the place of existing vanilla designs.
+### I can't find the icons I downloaded.
+Here are some possible solutions:
+- Apply the texture pack. Go to <cg>Texture Loader</c> and move the pack named \"<co>**Downloaded Icons**</c>\" and refresh.
+- Some icons use the \"<cf>Vanilla</c>\" format, thus they take place of existing vanilla designs.
+- Reload the textures if you recently downloaded some.
 ***
 ### I want to report an Icon
 If you came across with an icon that doesn't load properly, or has incorrect author credits, make sure to report it to the admins of the Gallery via the <cd>Discord Server</c>.
 ***
 ### I'm having connection issues
-If you're having connection issues with the mod, please be patient. This can either mean that you have internet connection issues, rate limitations or it's a server-side issue.)";
+If the gallery doesn't load for the first time, <cg>leave and open it again to refresh it</c>.
+
+If it keeps failing to load, please be patient. It's possible that you have internet issues, limited connection or a server-side issue of the Gallery.)";
 
 constexpr const char *faqSPA = R"(# FAQ	
 Esta es una lista de preguntas frecuentes, se ira actualizando al traves del tiempo. Si necesitas mas ayuda sobre el mod, unite al servidor de Discord.	
 ***
-### Como me aplico los iconos?	
-Si los iconos si descargan por medio del mod, ya debes tener una carpeta destino de los mismos. Ve al <cg>Texture Loader</c> y mueve el Pack llamado \"<co>**Downloaded Icons**</c>\" (Iconos descargados) a la columna derecha del loader y recarga las texturas del juego.	
-***
 ### No encuentro un icono que descargue	
-Recarga tus texturas si no vez algun cambio. Algunos iconos pueden ser de formato \"<cf>Vanilla</c>\", y por ende, toman el lugar de un icono existente del juego.	
+Posibles soluciones:
+- Aplica el texture pack. Ve al <cg>Texture Loader</c> y mueve el Pack llamado \"<co>**Downloaded Icons**</c>\" (Iconos descargados) a la columna derecha del loader y recarga las texturas.
+- Algunos iconos pueden ser de formato \"<cf>Vanilla</c>\" y toman el lugar de iconos existentes del juego.
+- Recarga las texturas si has descargado algun icono reciente.
 ***
 ### Quiero reportar un Icono	
 Si te haz encontrado un icono que no carga, o cuyos creditos no son los correctos, reportalo a los admins de la Galeria en el <cd>Servidor de Discord</c>.	
 ***
 ### Tengo problemas de conexion	
-Si tienes problemas de conexion con el mod, ten paciencia. Es posible que tengas problemas de internet, limitada la conexion o es un problema del servidor de la Galeria.)";
+Si la galeria no se carga la primera vez, <cg>sal de ella y abrela de nuevo para actualizarla</c>.
+
+Si sigue sin cargarse, ten paciencia. Es posible que tengas problemas con internet, una conexion limitada o un problema del lado del servidor de la galeria.)";
 
 constexpr const char *supportENG = R"(# Support
 If you come across bugs with the mod itself or help in the development of the Icon Gallery, make sure to contact us through the [GitHub repository](https://github.com/MasterL500/IconGallery-geode) or through [Asterveila's Discord Server](https://discord.gg/dceY3uvGzD)
