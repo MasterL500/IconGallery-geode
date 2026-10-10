@@ -1,12 +1,21 @@
 # Changelog
 
-### <cy>v1.0.0-beta.3</c> (Latest)
+### <cy>v1.0.0-beta.4</c> (Latest)
+
+* <co>Reworked</c> UI of the gallery (to solve 4:3 issues).
+* <co>Reworked</c> button designs on the mod.
+* <cg>Added</c> new renaming system (experimental).
+* <cg>Added</c> experimental settings segment.
+* <cy>Fixed</c> some typos and text errors.
+* <cr>Removed</c> jones.
+
+### <co>v1.0.0-beta.3</c>
 
 * <co>Reworked</c> error labeling, hopefully to reduce chances of crashing.
 * <co>Reworked</c> notification if an icon fails to download.
 * <cy>Fixed</c> some typos.
 
-### <cy>v1.0.0-beta.2</c> (Latest)
+### <co>v1.0.0-beta.2</c>
 
 * <cg>Added</c> help information in English and Spanish.
 * <cg>Added</c> setting to download Vanilla icons as More Icons Format.

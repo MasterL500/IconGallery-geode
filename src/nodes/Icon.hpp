@@ -4,19 +4,18 @@
 
 using namespace geode::prelude;
 
-class IconCell;
-
 enum IconFormat
 {
 	Vanilla,
 	MoreIcons
 };
 
-class Icon : public CCObject
+class IconCell;
+
+class Icon : public CCObject, public SetTextPopupDelegate
 {
 public:
-	IconCell *m_cell = nullptr;
-
+	//	Main Info
 	std::string m_name;
 	std::string m_author;
 	std::string m_fileName;
@@ -26,6 +25,8 @@ public:
 	IconFormat m_format;
 	int m_downloads;
 
+	//	Extra Info
+	IconCell *m_cell = nullptr;
 	std::filesystem::path m_zipPath;
 	std::vector<std::string> m_collaborators = {};
 
@@ -42,4 +43,11 @@ public:
 
 	void downloadIcon();
 	void unpackIcon();
+
+	//	Experimental Resources
+	std::vector<std::filesystem::path> m_tempFiles = {};
+	std::filesystem::path exp_getUnzipLocation(bool forceMoreIcons = false);
+
+	void exp_unpackIcon();
+	void setTextPopupClosed(SetTextPopup *popup, gd::string text) override;
 };

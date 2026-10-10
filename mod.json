@@ -8,7 +8,7 @@
 	},
 	"id": "ml5.icon-gallery",
 	"name": "Icon Gallery",
-	"version": "v1.0.0-beta.3",
+	"version": "v1.0.0-beta.4",
 	"developers": [
 		"ML500",
 		"Saritahhh"
@@ -32,7 +32,7 @@
 		"vanilla-more-icons": {
 			"type": "bool",
 			"name": "Vanilla as More Icons",
-			"description": "cy>**ENGLISH**</c>: Icons with the <cf>Vanilla</c> format will be treated the same as icons with <cp>More Icons</c> format.\n\nThat means, they'll end inside the <cc>Texture Pack</c>'s <cp>More Icons</c> folders.\n\n<cy>**SPANISH**</c>: Iconos con el formato <cf>Vanilla</c> se trataran igual que iconos con formato <cp>More Icons</c>.\n\nEs decir, terminarian dentro de las carpetas <cp>More Icons</c> del <cc>Texture Pack</c>.",
+			"description": "<cy>**ENGLISH**</c>: Icons with the <cf>Vanilla</c> format will be treated the same as Icons with the <cp>More Icons</c> format.\n\nThat means, they'll end inside the <cc>Texture Pack</c>'s <cp>More Icons</c> folder.\n***\n<cy>**SPANISH**</c>: Iconos con el formato <cf>Vanilla</c> se trataran igual que iconos con formato <cp>More Icons</c>.\n\nEs decir, terminarian dentro de las carpetas <cp>More Icons</c> del <cc>Texture Pack</c>.",
 			"default": true
 		},
 		"unzip-settings": {
@@ -42,7 +42,7 @@
 		"auto-unpack": {
 			"type": "bool",
 			"name": "Automatic unpacking",
-			"description": "<cy>**ENGLISH**</c>: Icons you downloaded from the gallery will be extracted and added right away on the designated Pack folder.\n**\n<cy>***SPANISH**</c>: Iconos descargados seran extraidos y agregados de una vez en la carpeta del Pack designado.",
+			"description": "<cy>**ENGLISH**</c>: Icons you downloaded from the gallery will be extracted and added right away on the designated Pack folder.\n***\n<cy>***SPANISH**</c>: Iconos descargados seran extraidos y agregados de una vez en la carpeta del Pack designado.",
 			"default": true
 		},
 		"delete-zips": {
@@ -58,7 +58,7 @@
 		"resources-folder": {
 			"type": "bool",
 			"name": "Use Resources Folder",
-			"description": "<cy>**ENGLISH**</c>: Icons with the <cf>Vanilla</c> format would end up in the main game resources folder.\n\n<cr>Do not enable it if you don't want to replace vanilla Icons.</c>\n***\n<cy>**SPANISH**</c>: Iconos con el formato <cf>Vanilla</c> terminarian en la carpeta de recursos principales del juego.\n\n<cr>No lo actives si no quieres reemplazar los Iconos originales</c>",
+			"description": "<cy>**ENGLISH**</c>: Icons with the <cf>Vanilla</c> format would end up in the main game resources folder.\n\n<cr>Do not enable it if you don't want to replace vanilla Icons.</c>\n***\n<cy>**SPANISH**</c>: Iconos con el formato <cf>Vanilla</c> terminarian en la carpeta de recursos principales del juego.\n\n<cr>No lo actives si no quieres reemplazar los Iconos originales.</c>",
 			"platforms": [
 				"win",
 				"mac"
@@ -70,7 +70,7 @@
 		"more-icons-folder": {
 			"type": "bool",
 			"name": "Use More Icons folder",
-			"description": "<cy>**ENGLISH**</c>: If you want **ALL** downloaded icons end up inside the folders of the <cp>**More Icons Mod**</c>.\n\nKeep in mind you could override some of your own icons.\n***\n<cy>**SPANISH**</c>: Si quieres que **TODOS** los iconos descargados terminen dentro de las carpetas del <cp>**Mod de More Icons**</c>.\n\nToma encuenta que pdorias reemplazar algunos que tengas.",
+			"description": "<cy>**ENGLISH**</c>: If you want **ALL** downloaded icons end up inside the folders of the <cp>**More Icons Mod**</c>.\n\n<cr>Keep in mind you could override some of your own icons.</c>\n***\n<cy>**SPANISH**</c>: Si quieres que **TODOS** los iconos descargados terminen dentro de las carpetas del <cp>**Mod de More Icons**</c>.\n\n<cr>Toma encuenta que pdorias reemplazar algunos que tengas.</c>",
 			"enable-if": "loaded:hiimjustin000.more_icons",
 			"enable-if-description": "This option requires More Icons to be installed",
 			"default": false
@@ -80,6 +80,16 @@
 			"name": "Icons Pack Folder",
 			"description": "<cy>***ENGLISH**</c>: Where all the downloaded icons will end up.\nThe mod will set-up a <cc>texture pack</c> at the start and assigns this the location.\n\nMake sure to apply it on the <cg>Texture Loader</c> manager.\n***\n<cy>***SPANISH**</c>: El destino de los iconos que descargues de la Galeria.\nEl mod crea automaticamente un <cc>Texture Pack</c> al inicio y le asigna este destino.\n\nAsegurate de que tengas el Texture Pack aplicado con el <cg>Texture Loader</c>",
 			"default": ""
+		},
+		"experimental-settings":{
+			"type": "title",
+			"name": "Experimental Settings"
+		},
+		"experimental-export":{
+			"type": "bool",
+			"name": "New Unpacking Code",
+			"description":"<cy>**ENGLISH**</c>: If you want to test the new icon unpacking function, allows you to rename the icon filename if a name conflict is found.\n\nThis is an experimental feature, to test it out before replacing the main code.\n***\n<cy>**SPANISH**</c>: Si quieres probar la nueva funcion de extraer iconos, que te pide que cambies el nombre de archivo de un icono si se detecta un conflicto.\n\nEsta es una funcion experimental, para ponerla a prueba antes de reemplazar el codigo principal.",
+			"default": false
 		}
 	},
 	"links": {

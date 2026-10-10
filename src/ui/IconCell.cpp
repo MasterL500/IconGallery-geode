@@ -145,8 +145,8 @@ bool IconCell::init(Icon *icon, bool even)
 	m_descText->setAnchorPoint({0, 0.5f});
 	m_descText->setScale(0.5f);
 
-	float descWidth = 220.f;
-	float descScale = 0.5f;
+	float descWidth = 210.f;
+	float descScale = 0.45f;
 
 	m_descText->setWidth(descWidth);
 	m_descText->limitLabelWidth(descWidth, descScale, 0.2f);
@@ -165,9 +165,9 @@ bool IconCell::init(Icon *icon, bool even)
 
 	//	Description Background
 	auto m_descBg = NineSlice::create("BlackSquare.png"_spr);
-	m_descBg->setContentSize({235.f, 26.f});
+	m_descBg->setContentSize({220.f, 24.f});
 	m_descBg->setAnchorPoint({0, 0.5f});
-	m_descBg->setOpacity(70);
+	m_descBg->setOpacity(60);
 	m_descBg->setZOrder(-1);
 	this->addChildAtPosition(m_descBg, Anchor::Left, {70, -7}, false);
 
@@ -206,7 +206,7 @@ bool IconCell::init(Icon *icon, bool even)
 	m_icon->m_downloadBar->setContentSize(m_size);
 	this->addChild(m_icon->m_downloadBar);
 
-	m_icon->m_downloadBar->m_groove->setScale(0.75f);
+	m_icon->m_downloadBar->m_groove->setScale(0.5f);
 	m_icon->m_downloadBar->m_groove->setAnchorPoint({1, 0.5});
 	m_icon->m_downloadBar->m_touchLogic->setVisible(false);
 	m_icon->m_downloadBar->m_groove->setPosition({m_size.width - 5.f, 7.5});

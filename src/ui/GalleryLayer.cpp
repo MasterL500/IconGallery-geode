@@ -22,12 +22,12 @@ bool GalleryLayer::init()
 
 	//	Frame
 	auto frame = NineSlice::create("Frame.png"_spr);
-	frame->setContentSize({400, 255});
+	frame->setContentSize({380, 255});
 	addChildAtPosition(frame, Anchor::Center, ccp(0, 0), false);
 
 	//	Title
 	auto title = CCSprite::create("GalleryLabel.png"_spr);
-	addChildAtPosition(title, Anchor::Top, ccp(0, -30), false);
+	addChildAtPosition(title, Anchor::Center, ccp(0, 136), false);
 
 	//  Back Button Menu
 	auto backMenu = CCMenu::create();
@@ -56,7 +56,7 @@ bool GalleryLayer::init()
 	m_prevBtn->setTag(-1);
 	m_prevBtn->setVisible(false);
 	m_prevBtn->setID("prev-page-button");
-	m_pagesMenu->addChildAtPosition(m_prevBtn, Anchor::Center, ccp(-216, 0), false);
+	m_pagesMenu->addChildAtPosition(m_prevBtn, Anchor::Center, ccp(-206, 0), false);
 
 	//	Next Page Button
 	auto nextSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png");
@@ -69,7 +69,7 @@ bool GalleryLayer::init()
 	m_nextBtn->setTag(1);
 	m_nextBtn->setVisible(false);
 	m_nextBtn->setID("next-page-button");
-	m_pagesMenu->addChildAtPosition(m_nextBtn, Anchor::Center, ccp(216, 0), false);
+	m_pagesMenu->addChildAtPosition(m_nextBtn, Anchor::Center, ccp(206, 0), false);
 
 	//	Bottom Menu -- For searching by Gamemode
 	m_modesMenu = CCMenu::create();
@@ -84,16 +84,16 @@ bool GalleryLayer::init()
 	//	Left Button Menu -- For Settings and options
 	auto leftButtonMenu = CCMenu::create();
 	leftButtonMenu->setAnchorPoint({0, 0});
+	leftButtonMenu->setContentSize({40, 160});
 	leftButtonMenu->setLayout(ColumnLayout::create()
 								  ->setAxisAlignment(AxisAlignment::Start)
-								  ->setGap(0.5f));
-
+								  ->setGap(0.0f));
+	leftButtonMenu->setID("left-button-menu");
 	addChildAtPosition(leftButtonMenu, Anchor::BottomLeft, ccp(8, 8), false);
 
-	//	Settings Button -- Self-explanatory
-	auto settingsSpr = CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");
-	settingsSpr->setScale(0.85f);
-
+	//	Buttons for the Left Menu
+	//	Settings Button -- Opens the settings of the Mod.
+	auto settingsSpr = CircleButtonSprite::createWithSprite("SettingsIcon.png"_spr, 1.4, CircleBaseColor::Green, CircleBaseSize::SmallAlt);
 	auto settingsBtn = CCMenuItemSpriteExtra::create(
 		settingsSpr,
 		this,
@@ -103,8 +103,9 @@ bool GalleryLayer::init()
 	leftButtonMenu->updateLayout();
 
 	//	Folder Button -- Displays the current location where all icons will be downloaded.
+	auto folderSpr = CircleButtonSprite::createWithSprite("IconFolder.png"_spr, 1.0, CircleBaseColor::Green, CircleBaseSize::SmallAlt);
 	auto folderBtn = CCMenuItemSpriteExtra::create(
-		CircleButtonSprite::createWithSpriteFrameName("gj_folderBtn_001.png", 1, CircleBaseColor::Green, CircleBaseSize::SmallAlt),
+		folderSpr,
 		this,
 		menu_selector(GalleryLayer::onFolder));
 	folderBtn->setID("folder-button");
@@ -112,42 +113,70 @@ bool GalleryLayer::init()
 	leftButtonMenu->updateLayout();
 
 	//	Restart Button -- Reloads the textures of the game (to load up the icons)
-	auto restartSpr = CCSprite::createWithSpriteFrameName("GJ_updateBtn_001.png");
-	restartSpr->setScale(0.9f);
-
-	auto restartBtn = CCMenuItemSpriteExtra::create(
-		restartSpr,
+	auto reloadSpr = CircleButtonSprite::createWithSprite("ReloadIcon.png"_spr, 1.4, CircleBaseColor::Green, CircleBaseSize::SmallAlt);
+	auto reloadBtn = CCMenuItemSpriteExtra::create(
+		reloadSpr,
 		this,
 		menu_selector(GalleryLayer::onReset));
-	restartBtn->setID("reload-textures-button");
-	leftButtonMenu->addChild(restartBtn);
+	reloadBtn->setID("reload-button");
+	leftButtonMenu->addChild(reloadBtn);
 	leftButtonMenu->updateLayout();
 
-	//	Help Button -- Displays a guide on how the Icon Gallery works.
-	auto helpSpr = CCSprite::createWithSpriteFrameName("GJ_helpBtn_001.png");
-	helpSpr->setScale(1.1f);
+	//	Right Menu -- Socials & Help
+	auto rightButtonMenu = CCMenu::create();
+	rightButtonMenu->setAnchorPoint({1, 0});
+	rightButtonMenu->setContentSize({40, 160});
+	rightButtonMenu->setLayout(ColumnLayout::create()
+								   ->setAxisAlignment(AxisAlignment::Start)
+								   ->setGap(0.0f));
 
+	rightButtonMenu->setID("right-button-menu");
+	addChildAtPosition(rightButtonMenu, Anchor::BottomRight, ccp(-8, 8), false);
+
+	//	Buttons for the Right Menu
+	//	Discord Button -- To enter Aster's Discord Server
+	auto discordSpr = CircleButtonSprite::createWithSprite("DiscordIcon.png"_spr, 1.3, CircleBaseColor::Gray, CircleBaseSize::SmallAlt);
+	auto discordBtn = CCMenuItemSpriteExtra::create(
+		discordSpr,
+		this,
+		menu_selector(GalleryLayer::onDiscord));
+	discordBtn->setID("discord-button");
+	rightButtonMenu->addChild(discordBtn);
+	rightButtonMenu->updateLayout();
+
+	//	Website Button -- To enter the Icon Gallery website
+	auto websiteSpr = CircleButtonSprite::createWithSprite("WebsiteIcon.png"_spr, 1.2, CircleBaseColor::Gray, CircleBaseSize::SmallAlt);
+	auto websiteBtn = CCMenuItemSpriteExtra::create(
+		websiteSpr,
+		this,
+		menu_selector(GalleryLayer::onWebsite));
+	websiteBtn->setID("website-button");
+	rightButtonMenu->addChild(websiteBtn);
+	rightButtonMenu->updateLayout();
+
+	//	Help Button -- Displays a guide on how the Icon Gallery works.
+	auto helpSpr = CircleButtonSprite::createWithSprite("HelpIcon.png"_spr, 1.4, CircleBaseColor::Green, CircleBaseSize::SmallAlt);
 	auto helpBtn = CCMenuItemSpriteExtra::create(
 		helpSpr,
 		this,
 		menu_selector(GalleryLayer::onHelp));
 	helpBtn->setID("help-button");
-	leftButtonMenu->addChild(helpBtn);
-	leftButtonMenu->updateLayout();
+	rightButtonMenu->addChild(helpBtn);
+	rightButtonMenu->updateLayout();
 
-	//	Other Buttons Menu
+	//	Extra Buttons Menu
 	auto buttonMenu = CCMenu::create();
 	buttonMenu->setID("button-menu");
 	addChildAtPosition(buttonMenu, Anchor::BottomLeft, ccp(0, 0), false);
 
-	//	Button -- Moving to a specific page
+	//	Page -- Moving to a specific page
 	m_pagesBtn = CCMenuItemSpriteExtra::create(
-		ButtonSprite::create(fmt::format("{}", m_page + 1).c_str(), 20, 20, 0.8f, true, "bigFont.fnt", "GJ_button_01.png"),
+		ButtonSprite::create(fmt::format("{}", m_page + 1).c_str(), 8, 16, 0.6f, true, "bigFont.fnt", "GJ_button_01.png", false),
 		this,
 		menu_selector(GalleryLayer::onFind));
 	m_pagesBtn->setTag(0);
 	m_pagesBtn->setID("pages-button");
-	buttonMenu->addChildAtPosition(m_pagesBtn, Anchor::TopRight, ccp(-25, -50), false);
+	buttonMenu->addChildAtPosition(m_pagesBtn, Anchor::TopRight, ccp(-25, -40), false);
 
 	//	Search -- Searches Icons by Name
 	m_findBtn = CCMenuItemSpriteExtra::create(
@@ -167,35 +196,19 @@ bool GalleryLayer::init()
 	m_authorBtn->setID("author-button");
 	buttonMenu->addChildAtPosition(m_authorBtn, Anchor::TopLeft, ccp(25, -100), false);
 
-	//	Socials -- Discord Button
-	auto discordBtn = CCMenuItemSpriteExtra::create(
-		CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png"),
-		this,
-		menu_selector(GalleryLayer::onDiscord));
-	discordBtn->setID("discord-button");
-	buttonMenu->addChildAtPosition(discordBtn, Anchor::BottomRight, ccp(-25, 60), false);
-
-	//	Socials -- Website Bytton
-	auto websiteBtn = CCMenuItemSpriteExtra::create(
-		CCSprite::create("WebsiteIcon.png"_spr),
-		this,
-		menu_selector(GalleryLayer::onWebsite));
-	websiteBtn->setID("website-button");
-	buttonMenu->addChildAtPosition(websiteBtn, Anchor::BottomRight, ccp(-25, 25), false);
-
 	//	Scroll Layer
-	m_scrollLayer = ScrollLayer::create({357, 220});
+	m_scrollLayer = ScrollLayer::create({340, 220});
 	m_scrollLayer->setZOrder(-2);
 	m_scrollLayer->setID("scroll-layer");
-	this->addChildAtPosition(m_scrollLayer, Anchor::Center, ccp(-178, -110), false);
+	this->addChildAtPosition(m_scrollLayer, Anchor::Center, ccp(-170, -110), false);
 
 	//	Page Number Label
-	m_pageLabel = CCLabelBMFont::create("", "goldFont.fnt");
+	m_pageLabel = CCLabelBMFont::create("1 to 10 of 9999", "goldFont.fnt");
 	m_pageLabel->limitLabelWidth(200.0f, 0.5f, 0.5f);
 	m_pageLabel->setAnchorPoint({1, 1});
 	m_pageLabel->setVisible(false);
-	m_pageLabel->setID("pages-label");
-	addChildAtPosition(m_pageLabel, Anchor::TopRight, ccp(-10, -10), false);
+	m_pageLabel->setID("page-label");
+	addChildAtPosition(m_pageLabel, Anchor::TopRight, ccp(-4, -4), false);
 
 	//	Loading Circle
 	m_loading = LoadingCircleSprite::create(1);

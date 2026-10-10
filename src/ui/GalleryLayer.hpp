@@ -52,7 +52,6 @@ public:
 	bool m_isFilterActive = false;
 
 	void onBack(CCObject *sender);
-
 	void onFolder(CCObject *sender);
 	void onSettings(CCObject *sender);
 	void onReset(CCObject *sender);

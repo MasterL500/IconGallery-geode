@@ -1,5 +1,6 @@
 #include "GalleryHelp.hpp"
 
+//	Alright, here's the code then
 bool GalleryHelpPopup::init()
 {
 	if (!Popup::init(410.f, 240.f, "GJ_square02.png"))
@@ -136,143 +137,36 @@ void GalleryHelpPopup::setInfo()
 
 	gd::string info;
 
-	//	This is terrible, I know, but it works.
 	switch (m_page)
 	{
 	case 0:
 		//	ABOUT
-		info = fmt::format(
-			"{}{}{}",
-			"# About This",
-			"\nThe <co>**Icon Gallery**</c> started as a website made to act as a museum of public <cp>custom icons</c>, so people could download them and add them in their games.",
-			"\n\n<cc>*Please be aware, that the servers of this mod might not be stable enough to handle many requests at once, so if Icons don't load properly in the gallery, this is the reason*</c>");
-
-		if (m_spanish)
-		{
-			info = fmt::format(
-				"{}{}{}",
-				"# Acerca de",
-				"\nLa <co>**Icon Gallery**</c> empezo como una pagina web que actua como un museo de <cp>iconos custom</c> publicos, para que la gente pueda descargarlos y agregarlos en sus juegos.",
-				"\n\n<cc>*Ten en cuenta que es posible que los servidores de este mod no sean lo suficientemente estables para manejar muchas solicitudes al mismo tiempo, asi que si los iconos no se cargan correctamente en la galleria, esa es la razon.*</c>");
-		}
+		info = m_spanish ? aboutSPA : aboutENG;
 		break;
 
 	case 1:
 		//	HOW TO USE
-		info = fmt::format(
-			"{}{}{}{}{}{}{}",
-			"# How to Use",
-			"\nThe mod will automatically set up a <cc>Texture Pack</c> upon start-up, where all the icons downloaded from the gallery will be saved by default.",
-			"\n\nThe mod does **NOT** automatically apply the texture pack, so you have to do that yourself inside the <cg>Texture Loader</c> manager.",
-			"\n***\n### Other Locations:",
-			"\nYou can enable some extra locations where downloaded icons end up in the settings.",
-			"\n\nLocations such as the folders within the <cl>More Icons</c> Mod (in general) or the original resources folder of the game (for <cf>Vanilla</c> icons).",
-			"\n\n<cr>Be advised, that you could override icons that are already there</c>.");
-
-		if (m_spanish)
-		{
-			info = fmt::format(
-				"{}{}{}{}{}{}{}",
-				"# Como Usar",
-				"\nEl mod te crea automaticamente un <cc>Texture Pack</c> al inicio, ahi es donde todos los iconos descargados de la galeria seran guardados por default.",
-				"\n\nEl mod **NO** aplica automaticamente el Texture Pack, tienes que hacerlo tu mismo dentro del manager de <cg>Texture Loader</c>.",
-				"\n***\n### Otros Lugares:",
-				"\nEn la configuracion, tu puedes activar otros lugares donde los iconos descargados terminaran si no quieres un texture pack, como la carpeta de More Icons (en general) o la carpeta de los iconos del juego (para los de formato vanilla).",
-				"\n\nLugares como las carpetas dentro del <cl>Mod de More Icons</c> (en general) o los recursos originales del juego (para iconos <cf>Vanilla</>).",
-				"\n\n<cr>Ten en cuenta, que podrias reemplazar iconos que ya esten ahi</c>.");
-		}
+		info = m_spanish ? tutorialSPA : tutorialENG;
 		break;
 
 	case 2:
 		//	DOWNLOADING
-		info = fmt::format(
-			"{}{}{}{}{}{}{}",
-			"# Downloading Icons",
-			"\nOnce you find the icons you wish to download, simply click the \"<co>Download</c>\" button at the right side of the icon.",
-			"\n***\n### Formats:",
-			"\n* **Icons with the <cf>Vanilla</c> format** are found inside the \"Icons\" folder of the Texture Pack.",
-			"\n* **Icons with the <cp>More Icons</c> format** are found inside their gamemode-specific folder of <cl>More Icons</c>.",
-			"\n***\n### Vanilla as More Icons",
-			"\nIf you have the <cy>**Vanilla as More Icons**</c> setting enabled, all icons you download will be treated as the <cp>More Icons</c> format.");
-
-		if (m_spanish)
-		{
-			info = fmt::format(
-				"{}{}{}{}{}{}{}",
-				"# Descargar Iconos",
-				"\nSi encuentras un icono que deseas descargar, presiona el boton de <co>Descarga</c> a la derecha del icono.",
-				"\n***\n### Formatos:",
-				"\n* **Iconos con el formato \"<cf>Vanilla</c>\"** se encuentran en la carpeta de \"Icons\" del texture pack.",
-				"\n* **Iconos con el formato \"<cp>More Icons</c>\"** se encuentran en su carpeta especifica del Gamemode de <cl>More Icons</c>.",
-				"\n***\n### Vanilla as More Icons",
-				"\nSi tienes la configuracion <cy>**Vanilla as More Icons**</c> activa, todos los iconos descargados se trataran como el formato <cp>More Icons</c>.");
-		}
+		info = m_spanish ? downloadSPA : downloadENG;
 		break;
 
 	case 3:
-		//	UUPLOADING
-		info = fmt::format(
-			"{}{}{}",
-			"# Uploading Icons",
-			"\nIf you wish to upload your own icons, visit the <cg>Website version of the Gallery</c> go to the submitting page (via the bottom right button at the website) and follow the steps to submission.",
-			"\n\n<cc>*Please* ***read the guidelines*** *and make sure your icon follows the right format. Any icon that breaks either will have higher chances of rejection.*</c>");
-
-		if (m_spanish)
-		{
-			info = fmt::format(
-				"{}{}{}",
-				"# Publicar Iconos",
-				"\nSi deseas publicar tu propio icono aqui, visita la <cg>Pagina web de la Icon Gallery</c>, ve al boton inferior derecho de la misma para ir a la pagina de subir icono y sigues los pasos en como subir tus iconos.",
-				"\n\n<cc>*Por favor,* ***lee las Guidelines*** *de la galeria y asegurate que tu icono sigue el formato correcto. Cualquier icono que rompe ambas cosas tiene mayores riesgos de rechazo.*</c>");
-		}
+		//	UPLOADING
+		info = m_spanish ? uploadSPA : uploadENG;
 		break;
 
 	case 4:
 		//	FAQ
-		info = fmt::format(
-			"{}{}{}{}{}{}{}{}{}{}",
-			"# FAQ",
-			"\nThis is a list of frequently asked questions, just in case you need to look for more help about the mod, join the discord server.",
-			"\n***\n### How do I equip the icons?",
-			"\nIf you downloaded icons via the mod, you should already have a Icon pack folder assigned it, go to the <cg>Texture Loader</c> and move the pack named \"<co>Downloaded Icons</c>\" into the right column and refresh the textures.",
-			"\n***\n### I can't find an Icon I downloaded",
-			"\nReload your textures if you don't see any changes. Some icons might have the \"<cf>Vanilla</c>\" format, thus they take the place of existing vanilla designs.",
-			"\n***\n### I want to report an Icon",
-			"\nIf you came across with an icon that doesn't load properly, or has incorrect author credits, make sure to report it to the admins of the Gallery via the <cd>Discord Server</c>.",
-			"\n***\n### I'm having connection issues",
-			"\nIf you're having connection issues with the mod, please be patient. This can either mean that you have internet connection issues, rate limitations or it's a server-side issue.");
-
-		if (m_spanish)
-		{
-			info = fmt::format(
-				"{}{}{}{}{}{}{}{}{}{}",
-				"# FAQ",
-				"\nEsta es una lista de preguntas frecuentes, se ira actualizando al traves del tiempo. Si necesitas mas ayuda sobre el mod, unite al servidor de Discord.",
-				"\n***\n### Como me aplico los iconos?",
-				"\nSi los iconos si descargan por medio del mod, ya debes tener una carpeta destino de los mismos. Ve al <cg>Texture Loader</c> y mueve el Pack llamado \"<co>Downloaded Icons</c>\" (Iconos descargados) a la columna derecha del loader y recarga las texturas del juego.",
-				"\n***\n ### No encuentro un icono que descargue",
-				"\nRecarga tus texturas si no vez algun cambio. Algunos iconos pueden ser de formato \"<cf>Vanilla</c>\", y por ende, toman el lugar de un icono existente del juego.",
-				"\n***\n ### Quiero reportar un Icono",
-				"\nSi te haz encontrado un icono que no carga, o cuyos creditos no son los correctos, reportalo a los admins de la Galeria en el <cd>Servidor de Discord</c>.",
-				"\n***\n ### Tengo problemas de conexion",
-				"\nSi tienes problemas de conexion con el mod, ten paciencia. Es posible que tengas problemas de internet, limitada la conexion o es un problema del servidor de la Galeria.");
-		}
+		info = m_spanish ? faqSPA : faqENG;
 		break;
 
 	case 5:
 		//	SUPPORT
-		info = fmt::format(
-			"{}{}",
-			"# Support",
-			"\nIf you come across bugs with the mod itself or wish to support the development of the gallery in any way, make sure to contact us through the [GitHub repository](https://github.com/MasterL500/IconGallery-geode) or through [Asterveila's Discord Server](https://discord.gg/dceY3uvGzD).");
-
-		if (m_spanish)
-		{
-			info = fmt::format(
-				"{}{}",
-				"# Soporte",
-				"\nSi encuentras un bug del mod mismo o deseas ayudar el desarrollo de la galeria (ya sea el Mod o la pagina web) de alguna manera, asegurate de contactarnos a traves del [Repositorio Github](https://github.com/MasterL500/IconGallery-geode) o por medio del [Servidor de Discord](https://discord.gg/dceY3uvGzD).");
-		}
+		info = m_spanish ? supportSPA : supportENG;
 		break;
 	}
 
