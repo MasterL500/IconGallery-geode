@@ -1,8 +1,8 @@
 #include <algorithm>
-#include "../nodes/Icon.hpp"
+//	#include "../nodes/Icon.hpp"
 #include "GalleryLayer.hpp"
 #include "GalleryHelp.hpp"
-#include "IconCell.hpp"
+//	#include "IconCell.hpp"
 
 const int CELL_HEIGHT = 73;
 
@@ -224,7 +224,7 @@ bool GalleryLayer::init()
 	this->addChildAtPosition(m_errorLabel, Anchor::Center, ccp(0, 0), false);
 
 	//	If there's no "Icon Pack" settled (via settings), creates one.
-	auto noPackExists = Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder").empty();
+	auto noPackExists = Mod::get()->getSettingValue<asp::fs::Path>("icon-pack-folder").empty();
 	if (noPackExists)
 	{
 		this->runAction(CCSequence::create(
@@ -234,7 +234,11 @@ bool GalleryLayer::init()
 	}
 
 	//	Calls the function to get the API URL
-	fetchURL();
+
+	/*
+		WORK IN PR0GRESS
+		fetchURL();
+	*/
 
 	setKeypadEnabled(true);
 	setKeyboardEnabled(true);
@@ -276,7 +280,9 @@ void GalleryLayer::setupIconPack()
 			//	If yes, creates the directory
 			if (yes)
 			{
-				auto directory = Loader::get()->getInstalledMod("geode.texture-loader")->getConfigDir() / "packs";
+				/*
+					WORK IN PROGRESS
+					auto directory = Loader::get()->getInstalledMod("geode.texture-loader")->getConfigDir() / "packs";
 
 				if (std::filesystem::create_directories(directory / "Icon Gallery"))
 				{
@@ -316,6 +322,7 @@ void GalleryLayer::setupIconPack()
 					Notification::create("Error while creating Pack Folder", NotificationIcon::Error)->show();
 					log::error("There was an error attempting to create the directory.");
 				}
+				*/
 			}
 			else if (no)
 			{
@@ -453,8 +460,10 @@ void GalleryLayer::fetchGallery()
 
 void GalleryLayer::loadGallery()
 {
-	m_maxPage = m_fetchedData["totalPages"].asInt().unwrapOr(999) - 1;
-	auto totalIcons = m_fetchedData["totalIcons"].asInt().unwrapOr(1);
+	/*
+		WORK IN PROGRESS
+		m_maxPage = m_fetchedData["totalPages"].asInt().unwrapOr(999) - 1;
+		auto totalIcons = m_fetchedData["totalIcons"].asInt().unwrapOr(1);
 	auto offset = (m_page * 10);
 
 	if (m_loading)
@@ -506,20 +515,20 @@ void GalleryLayer::loadGallery()
 				iconData["description"].asString().unwrapOr(""),
 				iconData["format"].asString().unwrapOr(""));
 
-			//	If there's data of collaborators
-			auto collab = iconData["collaborators"].as<std::vector<std::string>>().unwrap();
-			if (!collab.empty())
-			{
-				newIcon->addCollab(collab);
+				//	If there's data of collaborators
+				auto collab = iconData["collaborators"].as<std::vector<std::string>>().unwrap();
+				if (!collab.empty())
+				{
+					newIcon->addCollab(collab);
+				}
+
+				icons.push_back(newIcon);
+
+				IconCell *cell = IconCell::create(newIcon, ii % 2 == 0);
+				m_scrollLayer->m_contentLayer->addChild(cell);
+				cell->setPosition(0, (CELL_HEIGHT * fetchedIcons.size()) - CELL_HEIGHT * (ii + 1));
+				ii++;
 			}
-
-			icons.push_back(newIcon);
-
-			IconCell *cell = IconCell::create(newIcon, ii % 2 == 0);
-			m_scrollLayer->m_contentLayer->addChild(cell);
-			cell->setPosition(0, (CELL_HEIGHT * fetchedIcons.size()) - CELL_HEIGHT * (ii + 1));
-			ii++;
-		}
 
 		//	Fixes the scroll layer
 		int iconCount = m_scrollLayer->m_contentLayer->getChildrenCount();
@@ -529,6 +538,7 @@ void GalleryLayer::loadGallery()
 		m_prevBtn->setVisible(m_page > 0);
 		m_nextBtn->setVisible(m_page < m_maxPage);
 	}
+	*/
 }
 
 void GalleryLayer::refreshGallery()
@@ -630,7 +640,7 @@ void GalleryLayer::onFind(CCObject *sender)
 	{
 		log::debug("Current Search Filter: \"{}\"", m_searchFilter);
 
-		auto popup = SetTextPopup::create(m_searchFilter, "Enter a Name", 100, "Search Icon", "Go", true, 0);
+		auto popup = SetTextPopup::create(m_searchFilter, "Enter a Name", 100, "Search Icon", "Go", true, 0, false, 0, 0);
 		popup->m_delegate = this;
 		popup->setTag(0);
 		popup->show();
@@ -639,7 +649,7 @@ void GalleryLayer::onFind(CCObject *sender)
 	{
 		log::debug("Current Author Filter: \"{}\"", m_authorFilter);
 
-		auto popup = SetTextPopup::create(m_authorFilter, "Enter an User", 100, "Search by Author", "Go", true, 0);
+		auto popup = SetTextPopup::create(m_authorFilter, "Enter an User", 100, "Search by Author", "Go", true, 0, false, 0, 0);
 		popup->m_delegate = this;
 		popup->setTag(1);
 		popup->show();
@@ -674,7 +684,7 @@ void GalleryLayer::setIDPopupClosed(SetIDPopup *popup, int value)
 	fetchGallery();
 };
 
-void GalleryLayer::setTextPopupClosed(SetTextPopup *popup, gd::string text)
+void GalleryLayer::setTextPopupClosed(SetTextPopup *popup, std::string text)
 {
 	if (!popup || popup->m_cancelled)
 		return;
@@ -732,14 +742,17 @@ void GalleryLayer::onSettings(CCObject *)
 
 void GalleryLayer::onFolder(CCObject *)
 {
-	if (!Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder").empty())
-	{
-		utils::file::openFolder(Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder"));
-	}
-	else if (Mod::get()->getSettingValue<bool>("more-icons-folder"))
-	{
-		utils::file::openFolder(Loader::get()->getInstalledMod("hiimjustin000.more_icons")->getConfigDir());
-	}
+	/*
+		WORK IN PROGRESS
+		if (!Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder").empty())
+		{
+			utils::file::openFolder(Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder"));
+		}
+		else if (Mod::get()->getSettingValue<bool>("more-icons-folder"))
+		{
+			utils::file::openFolder(Loader::get()->getInstalledMod("hiimjustin000.more_icons")->getConfigDir());
+		}
+		*/
 }
 
 void GalleryLayer::onReset(CCObject *)

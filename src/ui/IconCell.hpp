@@ -1,3 +1,5 @@
+/*	OH IM KILLING MYSELF
+
 #pragma once
 #include "../nodes/Icon.hpp"
 using namespace geode::prelude;
@@ -26,3 +28,5 @@ public:
 	void onInfo(CCObject *);
 	void updateStatus();
 };
+
+*/

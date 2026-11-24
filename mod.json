@@ -1,14 +1,14 @@
 {
-	"geode": "5.10.1",
+	"geode": "6.0.0-beta.1",
 	"gd": {
-		"win": "2.2081",
-		"mac": "2.2081",
-		"ios": "2.2081",
-		"android": "2.2081"
+		"win": "2.2091",
+		"mac": "2.2091",
+		"ios": "2.2091",
+		"android": "2.2091"
 	},
 	"id": "ml5.icon-gallery",
 	"name": "Icon Gallery",
-	"version": "v1.0.0-beta.4",
+	"version": "v1.0.0-beta.5",
 	"developers": [
 		"ML500",
 		"Saritahhh"
@@ -16,7 +16,6 @@
 	"description": "Download and use community-made icons in GD!",
 	"dependencies": {
 		"geode.node-ids": ">=v1.23.3",
-		"hiimjustin000.more_icons": ">=v2.1.0",
 		"geode.texture-loader": ">=1.10.0"
 	},
 	"settings": {

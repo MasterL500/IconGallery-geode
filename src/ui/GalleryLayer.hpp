@@ -29,7 +29,7 @@ protected:
 	CCSprite *getModeSprite(int tag, bool active);
 	void createModeButton(int tag, bool active = 0);
 	void setIDPopupClosed(SetIDPopup *popup, int value) override;
-	void setTextPopupClosed(SetTextPopup *popup, gd::string text) override;
+	void setTextPopupClosed(SetTextPopup *popup, std::string text) override;
 
 	//	Web Requesting
 	TaskHolder<web::WebResponse> m_listener;
@@ -43,8 +43,8 @@ protected:
 
 public:
 	IconType m_mode = IconType::Item;
-	gd::string m_searchFilter = "";
-	gd::string m_authorFilter = "";
+	std::string m_searchFilter = "";
+	std::string m_authorFilter = "";
 
 	unsigned int m_page = 0;
 	unsigned int m_maxPage = 999;

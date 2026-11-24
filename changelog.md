@@ -1,6 +1,10 @@
 # Changelog
 
-### <cy>v1.0.0-beta.4</c> (Latest)
+### <cy>v1.0.0-beta.5</c> (Latest)
+
+* <co>Ported to Geometry Dash 2.209</c>
+
+### <co>v1.0.0-beta.4</c>
 
 * <co>Reworked</c> UI of the gallery (to solve 4:3 issues).
 * <co>Reworked</c> button designs on the mod.

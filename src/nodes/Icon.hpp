@@ -1,3 +1,5 @@
+/*	OH IM KILLING MYSELF
+
 #pragma once
 #include <Geode/Geode.hpp>
 #include <Geode/loader/Dirs.hpp>
@@ -51,3 +53,5 @@ public:
 	void exp_unpackIcon();
 	void setTextPopupClosed(SetTextPopup *popup, gd::string text) override;
 };
+
+*/

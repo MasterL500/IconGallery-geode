@@ -35,7 +35,6 @@ class $modify(GarageLayer, GJGarageLayer)
 	{
 		auto scene = CCScene::create();
 		scene->addChild(GalleryLayer::create());
-
 		CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f, scene));
 	}
 };

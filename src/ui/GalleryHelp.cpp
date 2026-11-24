@@ -36,7 +36,7 @@ bool GalleryHelpPopup::init()
 	m_mainLayer->addChildAtPosition(m_selectMenu, Anchor::Left, ccp(10, 5), false);
 
 	//	The Categories
-	std::vector<gd::string> text = {
+	std::vector<std::string> text = {
 		"About", "How to Use", "Downloading", "Uploading", "FAQ", "Support"};
 
 	//	Creates the button for the categories
@@ -135,7 +135,7 @@ void GalleryHelpPopup::setInfo()
 	if (!m_textArea)
 		return;
 
-	gd::string info;
+	std::string info;
 
 	switch (m_page)
 	{

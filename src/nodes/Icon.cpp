@@ -1,3 +1,5 @@
+/*	OH IM KILLING MYSELF
+
 #include "Icon.hpp"
 #include "../ui/IconCell.hpp"
 
@@ -410,3 +412,5 @@ std::filesystem::path Icon::exp_getUnzipLocation(bool forceMoreIcons)
 	//	Returns the selected location.
 	return unzipPath;
 };
+
+*/

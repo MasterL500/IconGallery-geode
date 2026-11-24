@@ -1,3 +1,5 @@
+/*	OH IM KILLING MYSELF
+
 #include "IconCell.hpp"
 
 // someone doesn't wanna clutter init sorry
@@ -180,17 +182,6 @@ bool IconCell::init(Icon *icon, bool even)
 	auto m_menu = CCMenu::create();
 	m_menu->setContentSize(m_size);
 	this->addChildAtPosition(m_menu, Anchor::BottomLeft, ccp(0, 0), false);
-
-	/*	Info Button
-	auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoBtn_001.png");
-	infoSpr->setScale(0.775f);
-
-	auto m_infoBtn = CCMenuItemSpriteExtra::create(
-		infoSpr,
-		this,
-		menu_selector(IconCell::onInfo));
-	m_menu->addChildAtPosition(m_infoBtn, Anchor::Right, ccp(-70, 0), false);
-	*/
 
 	//	Download Button
 	auto downloadSpr = CCSprite::createWithSpriteFrameName("GJ_downloadBtn_001.png");
@@ -410,25 +401,6 @@ void IconCell::onDownload(CCObject *)
 		});
 }
 
-/*
-void IconCell::onInfo(CCObject *)
-{
-	if (!m_icon)
-	return;
-
-	std::string data =
-	"### Author: " + m_icon->m_author +
-	"\n***" +
-	"\n\n" + m_icon->m_description;
-
-	MDPopup::create(
-		m_icon->m_name,
-		data,
-		"Ok")
-		->show();
-	}
-*/
-
 IconCell *IconCell::create(Icon *m_icon, bool even)
 {
 	{
@@ -444,6 +416,8 @@ IconCell *IconCell::create(Icon *m_icon, bool even)
 		return nullptr;
 	}
 }
+	
+*/
 
 /*
 	std::string m_noBsDesc = utils::string::replace(m_icon->m_description, "\n", " ");
