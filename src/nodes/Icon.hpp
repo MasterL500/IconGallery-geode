@@ -1,5 +1,3 @@
-/*	OH IM KILLING MYSELF
-
 #pragma once
 #include <Geode/Geode.hpp>
 #include <Geode/loader/Dirs.hpp>
@@ -29,7 +27,7 @@ public:
 
 	//	Extra Info
 	IconCell *m_cell = nullptr;
-	std::filesystem::path m_zipPath;
+	asp::fs::Path m_zipPath;
 	std::vector<std::string> m_collaborators = {};
 
 	//	Creating and adding data
@@ -44,14 +42,12 @@ public:
 	TaskHolder<geode::utils::web::WebResponse> m_listener;
 
 	void downloadIcon();
-	void unpackIcon();
+	// void unpackIcon();
 
 	//	Experimental Resources
-	std::vector<std::filesystem::path> m_tempFiles = {};
-	std::filesystem::path exp_getUnzipLocation(bool forceMoreIcons = false);
+	//	std::vector<asp::fs::Path> m_tempFiles = {};
+	//	asp::fs::Path exp_getUnzipLocation(bool forceMoreIcons = false);
 
-	void exp_unpackIcon();
-	void setTextPopupClosed(SetTextPopup *popup, gd::string text) override;
+	// void exp_unpackIcon();
+	// void setTextPopupClosed(SetTextPopup *popup, std::string text) override;
 };
-
-*/

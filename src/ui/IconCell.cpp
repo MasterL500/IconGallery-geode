@@ -1,11 +1,9 @@
-/*	OH IM KILLING MYSELF
-
 #include "IconCell.hpp"
 
 // someone doesn't wanna clutter init sorry
 float getDescThreshold()
 {
-	auto m_measureLine = CCLabelBMFont::create("A", "chatFont.fnt");
+	auto m_measureLine = Label::create("A", "chatFont.fnt");
 	m_measureLine->setScale(0.5f);
 	float singleLineHeight = m_measureLine->getContentSize().height;
 
@@ -99,8 +97,8 @@ bool IconCell::init(Icon *icon, bool even)
 	this->addChildAtPosition(m_preview, Anchor::Left, ccp(35, 0), false);
 
 	//	Name of the Icon
-	auto m_iconName = CCLabelBMFont::create(m_icon->m_name.c_str(), "bigFont.fnt");
-	m_iconName->limitLabelWidth(220.0f, 0.5f, 0.25f);
+	auto m_iconName = Label::create(m_icon->m_name.c_str(), "bigFont.fnt");
+	m_iconName->setLimitLabelWidth(220.0f, 0.5f, 0.25f);
 	m_iconName->setAnchorPoint({0, 1.f});
 	this->addChildAtPosition(m_iconName, Anchor::Left, ccp(70, m_size.height / 2.f - m_margin / 3.f), false);
 
@@ -120,7 +118,7 @@ bool IconCell::init(Icon *icon, bool even)
 	};
 
 	//	Author of the Icon
-	auto m_iconAuthor = CCLabelBMFont::create(author.c_str(), "goldFont.fnt");
+	auto m_iconAuthor = Label::create(author.c_str(), "goldFont.fnt");
 	m_iconAuthor->setScale(0.45f);
 	m_iconAuthor->setAnchorPoint({0, 1});
 	this->addChildAtPosition(m_iconAuthor, Anchor::Left, ccp(70, m_size.height / 2.f - m_margin * 5.65f), false);
@@ -132,7 +130,7 @@ bool IconCell::init(Icon *icon, bool even)
 	// m_downloadIcon->setPosition(ccp(m_downloadCount->getPosition().x - .3f, 11));
 	this->addChildAtPosition(m_downloadIcon, Anchor::Left, ccp(70, -m_size.height / 2.f + m_margin * lowerMarginMult), false);
 
-	auto m_downloadCount = CCLabelBMFont::create(fmt::format("{}", m_icon->m_downloads).c_str(), "bigFont.fnt");
+	auto m_downloadCount = Label::create(fmt::format("{}", m_icon->m_downloads).c_str(), "bigFont.fnt");
 	m_downloadCount->setScale(0.3f);
 	m_downloadCount->setAnchorPoint({0, 0.5f});
 	// m_downloadCount->setColor({100, 255, 100});
@@ -143,15 +141,15 @@ bool IconCell::init(Icon *icon, bool even)
 	if (m_noBsDesc.empty())
 		m_noBsDesc = "[No Description Provided]";
 
-	auto m_descText = CCLabelBMFont::create(m_noBsDesc.c_str(), "chatFont.fnt");
+	auto m_descText = Label::create(m_noBsDesc.c_str(), "chatFont.fnt");
 	m_descText->setAnchorPoint({0, 0.5f});
 	m_descText->setScale(0.5f);
 
 	float descWidth = 210.f;
 	float descScale = 0.45f;
 
-	m_descText->setWidth(descWidth);
-	m_descText->limitLabelWidth(descWidth, descScale, 0.2f);
+	m_descText->setMaxWidth(descWidth);
+	m_descText->setLimitLabelWidth(descWidth, descScale, 0.2f);
 
 	if (m_descText->getContentSize().height > getDescThreshold())
 	{
@@ -159,8 +157,8 @@ bool IconCell::init(Icon *icon, bool even)
 		descScale = 0.42f;
 
 		m_descText->setScale(descScale);
-		m_descText->setWidth(descWidth);
-		m_descText->limitLabelWidth(descWidth, descScale, 0.2f);
+		m_descText->setMaxWidth(descWidth);
+		m_descText->setLimitLabelWidth(descWidth, descScale, 0.2f);
 	}
 
 	this->addChildAtPosition(m_descText, Anchor::Left, {75, -7}, false);
@@ -243,7 +241,7 @@ CCNode *IconCell::getTagContainer()
 
 	// Format Label
 	const char *formatText = m_icon->m_format == IconFormat::Vanilla ? "Vanilla" : "More Icons";
-	auto m_formatLabel = CCLabelBMFont::create(formatText, "bigFont.fnt");
+	auto m_formatLabel = Label::create(formatText, "bigFont.fnt");
 	m_formatLabel->setColor({150, 150, 255});
 	// m_formatLabel->setScale(0.3f);
 
@@ -307,7 +305,7 @@ void IconCell::updateStatus()
 	}
 }
 
-CCLabelBMFont *IconCell::getGamemodeLabel(IconType gamemode)
+Label *IconCell::getGamemodeLabel(IconType gamemode)
 {
 	const char *text = "????";
 	ccColor3B color = {120, 120, 120};
@@ -363,7 +361,7 @@ CCLabelBMFont *IconCell::getGamemodeLabel(IconType gamemode)
 		break;
 	}
 
-	auto label = CCLabelBMFont::create(text, "bigFont.fnt");
+	auto label = geode::Label::create(text, "bigFont.fnt");
 	// label->setAnchorPoint({0, 0.5});
 	label->setColor(color);
 	// label->setScale(0.3f);
@@ -373,7 +371,7 @@ CCLabelBMFont *IconCell::getGamemodeLabel(IconType gamemode)
 
 void IconCell::onDownload(CCObject *)
 {
-	auto noPackExists = Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder").empty();
+	auto noPackExists = Mod::get()->getSettingValue<asp::fs::Path>("icon-pack-folder").empty();
 	if (noPackExists)
 	{
 		auto warning = createQuickPopup(
@@ -416,13 +414,11 @@ IconCell *IconCell::create(Icon *m_icon, bool even)
 		return nullptr;
 	}
 }
-	
-*/
 
 /*
 	std::string m_noBsDesc = utils::string::replace(m_icon->m_description, "\n", " ");
 	if (m_noBsDesc.empty()) m_noBsDesc = "[No Description Provided]";
-	auto m_descText = CCLabelBMFont::create(m_noBsDesc.c_str(), "chatFont.fnt");
+	auto m_descText = Label::create(m_noBsDesc.c_str(), "chatFont.fnt");
 	m_descText->setScale(0.5f);
 	m_descText->setAnchorPoint({0, 1});
 	m_descText->setWidth(220.f);

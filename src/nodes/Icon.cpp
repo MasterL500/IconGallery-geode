@@ -1,5 +1,4 @@
-/*	OH IM KILLING MYSELF
-
+#include <asp/fs/fs.hpp>
 #include "Icon.hpp"
 #include "../ui/IconCell.hpp"
 
@@ -93,11 +92,11 @@ void Icon::downloadIcon()
 					{
 						if (Mod::get()->getSettingValue<bool>("experimental-export"))
 						{
-							exp_unpackIcon();
+							// exp_unpackIcon();
 						}
 						else
 						{
-							unpackIcon();
+							// unpackIcon();
 						}
 					}
 					else
@@ -113,11 +112,11 @@ void Icon::downloadIcon()
 								{
 									if (Mod::get()->getSettingValue<bool>("experimental-export"))
 									{
-										exp_unpackIcon();
+										// exp_unpackIcon();
 									}
 									else
 									{
-										unpackIcon();
+										// unpackIcon();
 									}
 								}
 							});
@@ -159,6 +158,8 @@ void Icon::downloadIcon()
 		});
 };
 
+/*
+	WORK IN PROGRESS
 //	Unpacking shenanigans
 void Icon::unpackIcon()
 {
@@ -175,8 +176,8 @@ void Icon::unpackIcon()
 	auto gamemode = modeFolders[(int)m_gamemode];
 
 	//	This is prone to issues, I know.
-	std::filesystem::path path = Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder");
-	std::filesystem::path unzipDir = (m_format == IconFormat::MoreIcons) || Mod::get()->getSettingValue<bool>("vanilla-more-icons") ? (path / "config" / "hiimjustin000.more_icons" / gamemode) : (path / "icons");
+	asp::fs::Path path = Mod::get()->getSettingValue<asp::fs::Path>("icon-pack-folder");
+	asp::fs::Path unzipDir = (m_format == IconFormat::MoreIcons) || Mod::get()->getSettingValue<bool>("vanilla-more-icons") ? (path / "config" / "hiimjustin000.more_icons" / gamemode) : (path / "icons");
 
 	//	Special locations (if their settings are enabled)
 	if (m_format == IconFormat::Vanilla && Mod::get()->getSettingValue<bool>("resources-folder"))
@@ -202,7 +203,7 @@ void Icon::unpackIcon()
 	auto entries = unzip.getEntries();
 
 	//	Verifies if the sprites exist (they are all named the same, so)
-	if (std::filesystem::exists(unzipDir / entries[0]))
+	if (asp::fs::exists(unzipDir / entries[0]))
 	{
 		auto entryName = utils::string::split(utils::string::pathToString(entries[0]), "-");
 
@@ -260,24 +261,29 @@ void Icon::exp_unpackIcon()
 	m_tempFiles = std::move(tempDirRes).unwrap();
 	auto unzipPath = exp_getUnzipLocation();
 
-	if (!std::filesystem::exists(unzipPath / m_tempFiles[0].filename()))
+	if (!asp::fs::exists(unzipPath / m_tempFiles[0].filename()))
 	{
-		if (!std::filesystem::exists(unzipPath))
+		if (!asp::fs::exists(unzipPath))
 		{
-			std::filesystem::create_directory(unzipPath);
+			if(asp::fs::createDir(unzipPath).isOk()){
+				log::debug("Unzip Path Created?");
+			};
 		}
 
 		for (int ii = 0; ii < m_tempFiles.size(); ii++)
 		{
-			std::filesystem::rename(m_tempFiles[ii], unzipPath / m_tempFiles[ii].filename());
-			log::debug("* FILE \"{}\" MOVED TO LOCATION.", m_tempFiles[ii].filename());
+			if(asp::fs::rename(m_tempFiles[ii], unzipPath / m_tempFiles[ii].filename()).isOk()){
+				log::debug("* FILE \"{}\" MOVED TO LOCATION.", m_tempFiles[ii].filename());
+			}
 		}
 
 		Notification::create("Icon Succesfully Added!", NotificationIcon::Success)->show();
 		log::debug("* Icon succesfully exported.");
 
-		std::error_code ec;
-		std::filesystem::remove_all(tempPath, ec);
+		//	WORK IN PROGRESS
+		if(asp::fs::removeDirAll(tempPath).isErr()){
+			log::debug("Hubo un Error");
+		}
 
 		return;
 	}
@@ -301,7 +307,7 @@ void Icon::exp_unpackIcon()
 }
 
 //	When the popup is closed
-void Icon::setTextPopupClosed(SetTextPopup *popup, gd::string text)
+void Icon::setTextPopupClosed(SetTextPopup *popup, std::string text)
 {
 	if (!popup)
 		return;
@@ -314,8 +320,10 @@ void Icon::setTextPopupClosed(SetTextPopup *popup, gd::string text)
 
 		//	Removes the temporal files (Because why bother?).
 		auto tempPath = Mod::get()->getConfigDir() / "temp" / geode::utils::string::replace(m_fileName, ".gdicon", "");
-		std::error_code ec;
-		std::filesystem::remove_all(tempPath, ec);
+
+		if(asp::fs::removeDirAll(tempPath, false).isOk()){
+			log::debug("Directory Deleted");
+		}
 
 		return;
 	}
@@ -335,7 +343,7 @@ void Icon::setTextPopupClosed(SetTextPopup *popup, gd::string text)
 			auto newFilename = fmt::format("{}-{}", text, extension);
 
 			//	Then moves the file into the destined folder.
-			std::filesystem::rename(m_tempFiles[ii], unzipPath / newFilename);
+			asp::fs::rename(m_tempFiles[ii], unzipPath / newFilename);
 			log::debug("* FILE \"{}\" MOVED TO LOCATION.", newFilename);
 		}
 
@@ -370,7 +378,7 @@ void Icon::setTextPopupClosed(SetTextPopup *popup, gd::string text)
 }
 
 //	Function to get the Unzip location
-std::filesystem::path Icon::exp_getUnzipLocation(bool forceMoreIcons)
+asp::fs::Path Icon::exp_getUnzipLocation(bool forceMoreIcons)
 {
 	//	Selecting the Gamemode Folder
 	std::vector<std::string> modeFolders = {
@@ -386,8 +394,8 @@ std::filesystem::path Icon::exp_getUnzipLocation(bool forceMoreIcons)
 	auto gamemode = modeFolders[(int)m_gamemode];
 
 	//	Path of the texture pack and default unzipping location (More Icons folder).
-	std::filesystem::path packPath = Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder");
-	std::filesystem::path unzipPath = packPath / "config" / MOREICONS / gamemode;
+	asp::fs::Path packPath = Mod::get()->getSettingValue<asp::fs::Path>("icon-pack-folder");
+	asp::fs::Path unzipPath = packPath / "config" / MOREICONS / gamemode;
 
 	//	Other path locations.
 	if (m_format == IconFormat::Vanilla && !Mod::get()->getSettingValue<bool>("vanilla-more-icons") && !forceMoreIcons)
@@ -412,5 +420,4 @@ std::filesystem::path Icon::exp_getUnzipLocation(bool forceMoreIcons)
 	//	Returns the selected location.
 	return unzipPath;
 };
-
 */

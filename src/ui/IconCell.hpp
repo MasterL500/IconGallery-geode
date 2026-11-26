@@ -1,5 +1,3 @@
-/*	OH IM KILLING MYSELF
-
 #pragma once
 #include "../nodes/Icon.hpp"
 using namespace geode::prelude;
@@ -14,7 +12,7 @@ protected:
 	int m_previewAttempts;
 
 	bool init(Icon *data, bool even);
-	CCLabelBMFont *getGamemodeLabel(IconType gamemode);
+	Label *getGamemodeLabel(IconType gamemode);
 	float getExtraScale(IconType type);
 	CCNode* getTagContainer();
 
@@ -28,5 +26,3 @@ public:
 	void onInfo(CCObject *);
 	void updateStatus();
 };
-
-*/

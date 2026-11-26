@@ -1,8 +1,10 @@
 #include <algorithm>
-//	#include "../nodes/Icon.hpp"
+#include <asp/fs/fs.hpp>
+#include <asp/fs/std.hpp>
+#include "../nodes/Icon.hpp"
 #include "GalleryLayer.hpp"
 #include "GalleryHelp.hpp"
-//	#include "IconCell.hpp"
+#include "IconCell.hpp"
 
 const int CELL_HEIGHT = 73;
 
@@ -200,7 +202,7 @@ bool GalleryLayer::init()
 	m_scrollLayer = ScrollLayer::create({340, 220});
 	m_scrollLayer->setZOrder(-2);
 	m_scrollLayer->setID("scroll-layer");
-	this->addChildAtPosition(m_scrollLayer, Anchor::Center, ccp(-170, -110), false);
+	this->addChildAtPosition(m_scrollLayer, Anchor::Center, ccp(0, 0), false);
 
 	//	Page Number Label
 	m_pageLabel = CCLabelBMFont::create("1 to 10 of 9999", "goldFont.fnt");
@@ -234,11 +236,7 @@ bool GalleryLayer::init()
 	}
 
 	//	Calls the function to get the API URL
-
-	/*
-		WORK IN PR0GRESS
-		fetchURL();
-	*/
+	fetchURL();
 
 	setKeypadEnabled(true);
 	setKeyboardEnabled(true);
@@ -280,11 +278,9 @@ void GalleryLayer::setupIconPack()
 			//	If yes, creates the directory
 			if (yes)
 			{
-				/*
-					WORK IN PROGRESS
-					auto directory = Loader::get()->getInstalledMod("geode.texture-loader")->getConfigDir() / "packs";
+				auto directory = Loader::get()->getInstalledMod("geode.texture-loader")->getConfigDir() / "packs";
 
-				if (std::filesystem::create_directories(directory / "Icon Gallery"))
+				if (asp::fs::createDir(directory / "Icon Gallery").isOk())
 				{
 					auto json = matjson::makeObject({{"textureldr", "1.5.0"},
 													 {"name", "Downloaded Icons"},
@@ -296,7 +292,7 @@ void GalleryLayer::setupIconPack()
 
 					if (utils::file::writeString(packPath / "pack.json", json.dump()))
 					{
-						Mod::get()->setSettingValue<std::filesystem::path>("icon-pack-folder", packPath);
+						Mod::get()->setSettingValue<asp::fs::Path>("icon-pack-folder", packPath);
 						auto popupSucess = createQuickPopup(
 							"Icon Pack created!",
 							"You can now download icons! To apply them, head to <cg>Texture Loader</c>, move the texture pack named \"<co>Downloaded Icons</c>\" to the right column and reload the textures.",
@@ -311,9 +307,9 @@ void GalleryLayer::setupIconPack()
 						log::error("There was an error while creating the Pack.json");
 					}
 				}
-				else if (std::filesystem::exists(directory / "Icon Gallery"))
+				else if (asp::fs::exists(directory / "Icon Gallery"))
 				{
-					Mod::get()->setSettingValue<std::filesystem::path>("icon-pack-folder", directory / "Icon Gallery");
+					Mod::get()->setSettingValue<asp::fs::Path>("icon-pack-folder", directory / "Icon Gallery");
 					Notification::create("Icon Pack found!", NotificationIcon::Success)->show();
 					log::info("Texture Pack found in the Loader, assigned the settings value to it");
 				}
@@ -322,7 +318,6 @@ void GalleryLayer::setupIconPack()
 					Notification::create("Error while creating Pack Folder", NotificationIcon::Error)->show();
 					log::error("There was an error attempting to create the directory.");
 				}
-				*/
 			}
 			else if (no)
 			{
@@ -460,10 +455,8 @@ void GalleryLayer::fetchGallery()
 
 void GalleryLayer::loadGallery()
 {
-	/*
-		WORK IN PROGRESS
-		m_maxPage = m_fetchedData["totalPages"].asInt().unwrapOr(999) - 1;
-		auto totalIcons = m_fetchedData["totalIcons"].asInt().unwrapOr(1);
+	m_maxPage = m_fetchedData["totalPages"].asInt().unwrapOr(999) - 1;
+	auto totalIcons = m_fetchedData["totalIcons"].asInt().unwrapOr(1);
 	auto offset = (m_page * 10);
 
 	if (m_loading)
@@ -515,20 +508,20 @@ void GalleryLayer::loadGallery()
 				iconData["description"].asString().unwrapOr(""),
 				iconData["format"].asString().unwrapOr(""));
 
-				//	If there's data of collaborators
-				auto collab = iconData["collaborators"].as<std::vector<std::string>>().unwrap();
-				if (!collab.empty())
-				{
-					newIcon->addCollab(collab);
-				}
-
-				icons.push_back(newIcon);
-
-				IconCell *cell = IconCell::create(newIcon, ii % 2 == 0);
-				m_scrollLayer->m_contentLayer->addChild(cell);
-				cell->setPosition(0, (CELL_HEIGHT * fetchedIcons.size()) - CELL_HEIGHT * (ii + 1));
-				ii++;
+			//	If there's data of collaborators
+			auto collab = iconData["collaborators"].as<std::vector<std::string>>().unwrap();
+			if (!collab.empty())
+			{
+				newIcon->addCollab(collab);
 			}
+
+			icons.push_back(newIcon);
+
+			IconCell *cell = IconCell::create(newIcon, ii % 2 == 0);
+			m_scrollLayer->m_contentLayer->addChild(cell);
+			cell->setPosition(0, (CELL_HEIGHT * fetchedIcons.size()) - CELL_HEIGHT * (ii + 1));
+			ii++;
+		}
 
 		//	Fixes the scroll layer
 		int iconCount = m_scrollLayer->m_contentLayer->getChildrenCount();
@@ -538,7 +531,6 @@ void GalleryLayer::loadGallery()
 		m_prevBtn->setVisible(m_page > 0);
 		m_nextBtn->setVisible(m_page < m_maxPage);
 	}
-	*/
 }
 
 void GalleryLayer::refreshGallery()
@@ -742,17 +734,14 @@ void GalleryLayer::onSettings(CCObject *)
 
 void GalleryLayer::onFolder(CCObject *)
 {
-	/*
-		WORK IN PROGRESS
-		if (!Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder").empty())
-		{
-			utils::file::openFolder(Mod::get()->getSettingValue<std::filesystem::path>("icon-pack-folder"));
-		}
-		else if (Mod::get()->getSettingValue<bool>("more-icons-folder"))
-		{
-			utils::file::openFolder(Loader::get()->getInstalledMod("hiimjustin000.more_icons")->getConfigDir());
-		}
-		*/
+	if (!Mod::get()->getSettingValue<asp::fs::Path>("icon-pack-folder").empty())
+	{
+		utils::file::openFolder(Mod::get()->getSettingValue<asp::fs::Path>("icon-pack-folder"));
+	}
+	else if (Mod::get()->getSettingValue<bool>("more-icons-folder"))
+	{
+		utils::file::openFolder(Loader::get()->getInstalledMod("hiimjustin000.more_icons")->getConfigDir());
+	}
 }
 
 void GalleryLayer::onReset(CCObject *)
